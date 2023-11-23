@@ -4,7 +4,7 @@ import 'package:example_menu/models/language_model.dart';
 var currentLanguage = LanguageName.ita;
 
 const String restourantName = "Al calderone di zia lucia";
-const String restourantLogo = "assets/restourantLogo.png";
+const String restourantLogo = "assets/restaurant/restourantLogo.png";
 
 //COLORI
 //Colori principali

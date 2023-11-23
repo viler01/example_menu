@@ -141,7 +141,7 @@ List<Food> provaListaMenu = [
       nameENG: "Steak",
       price: 10,
       category: FoodCategory.secondCourses,
-      image: "ProvaAssets/food/Tomahawk.jpg",
+      image: "assets/food/steak.jpg",
       descriptionITA: "Tomahawk alla griglia con senape",
       descriptionENG: "Grilled tomahawk with mustard",
       allergens: [Allergens.milk, Allergens.mustard],
