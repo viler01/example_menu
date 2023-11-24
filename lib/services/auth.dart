@@ -22,7 +22,9 @@ class AuthService {
         password: password,
       );
       User user = result.user!;
+
       return _userFromFirebase(user);
+
     } on FirebaseAuthException catch (e) {
       print('exception : $e');
       return null;
