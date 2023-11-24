@@ -15,6 +15,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
 
 
@@ -44,13 +46,24 @@ class _HomePageState extends State<HomePage> {
                 ListTile(
                   leading: const Icon(Icons.person),
                   title: const Text('Staff Login'),
-                  onTap: (){
+                  onTap: ()
+                  {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return StreamProvider<CurrentUser?>.value(
+                              value: AuthService().user,
+                              initialData: CurrentUser(),
+                              catchError: (_, __) => null,
+                              child: AppDirector());
+                        }));
+                  }
+                 /* {
                     Navigator.pop(context);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                           return Loginscreen();
                         }));
-                  },
+                  },*/
                 )
               ],
             ),

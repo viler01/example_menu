@@ -19,7 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController email = TextEditingController();
+
+  String email = '';
+  String pass = '';
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: constraints.maxHeight * .4,
                           ),
+
                           CustomTextField(
                             controller: emailController,
+                            onChanged: (val) {
+                              setState(() => email = val);
+                            },
                             labelText: "E-Mail ",
                             validator: (value) {
                               String pattern = r'\w+@\w+\.\w+';
@@ -71,6 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           CustomTextField(
+                            onChanged: (val) {
+                              setState(() => pass = val);
+                            },
                             controller: password,
                             obscureText: showPassword,
                             validator: (value) {
@@ -81,22 +90,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             },
                           ),
+
                           TextButton(
                             onPressed: () async {
                               print('email : ${emailController.text}');
                               print('pass : ${password.text}');
+                              print(email);
+                              print(pass);
 
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              }
                               setState(() => showLoading = true);
                               await AuthService()
                                   .loginWithEmailAndPassword(
-                                  email: emailController.text, password: password.text)
+                                  email: email, password: password.text)
                                   .then((state) {
                                 setState(() => showLoading = false);
+                                /*
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return StaffHomepage();
+                                }));*/
                                 Navigator.of(context)
                                     .pushReplacementNamed(AppDirector.id);
+
                                 if (state == null) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(
@@ -134,6 +148,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextField(
                             labelText: "E-Mail ",
                             controller: emailController,
+
+                            onChanged: (val) {
+                              setState(() => email = val);
+                            },
                             validator: (value) {
                               String pattern = r'\w+@\w+\.\w+';
                               RegExp regex = RegExp(pattern);
@@ -162,18 +180,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               print('email : ${emailController.text}');
                               print('pass : ${password.text}');
-
+                              print(email);
                               if (!_formKey.currentState!.validate()) {
                                 return;
                               }
                               setState(() => showLoading = true);
                               await AuthService()
                                   .loginWithEmailAndPassword(
-                                  email: emailController.text, password: password.text)
+                                  email: email, password: password.text)
                                   .then((state) {
+                                    print('ok');
                                 setState(() => showLoading = false);
-                                Navigator.of(context)
-                                    .pushReplacementNamed(AppDirector.id);
+                                    Navigator.of(context)
+                                        .pushReplacementNamed(AppDirector.id);
                                 if (state == null) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(

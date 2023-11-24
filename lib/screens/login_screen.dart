@@ -122,8 +122,13 @@ class _LoginscreenState extends State<Loginscreen> {
                                           email: email, password: password.text)
                                       .then((state) {
                                     setState(() => showLoading = false);
+                                    /*
+                                    Navigator.push(context,MaterialPageRoute(builder: (context){
+                                      return AppDirector();
+                                    })); */
                                     Navigator.of(context)
                                         .pushReplacementNamed(AppDirector.id);
+
                                     if (state == null) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
