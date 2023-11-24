@@ -6,26 +6,30 @@ class CustomTextField extends StatelessWidget {
     super.key,
     this.labelText,
     this.onChanged,
-    this.onSubmitted,
     this.onTap,
     this.controller,
     this.prefixText,
-    this.keyboardType
+    this.keyboardType,
+    this.validator,
+    this.obscureText
   });
   final String? labelText;
-  final Function(String)? onSubmitted;
   final Function()? onTap;
   final Function(String)? onChanged;
   final TextEditingController? controller;
   final String? prefixText;
   final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final bool? obscureText;
 
 
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-        child: TextField(
+        child: TextFormField(
+          obscureText: obscureText != null ? obscureText! : false,
+          validator: validator,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             prefixText: prefixText,
@@ -46,7 +50,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           onTap: onTap,
           onChanged: onChanged,
-          onSubmitted: onSubmitted,
+
         )
     );
   }

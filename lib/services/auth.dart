@@ -12,40 +12,6 @@ class AuthService {
     return _auth.authStateChanges().map(_userFromFirebase);
   }
 
-  /* Future registerWithEmailAndPassword({
-
-    required String email,
-    required String name,
-    required String password,
-
-  }) async {
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      User user = result.user!;
-
-      UserData userData = UserData(
-
-          uid: user.uid,
-          name: name,
-          email: email,
-
-      );
-      await DatabaseUser().createEdit(isEdit: false, userData: userData);
-
-      return _userFromFirebase(user);
-    } on FirebaseAuthException catch (e) {
-      error = e.message!;
-      return null;
-    } catch (e) {
-      error = e.toString();
-      print(e);
-      return null;
-    }
-  }*/
-
   Future loginWithEmailAndPassword({
     required String email,
     required String password,
@@ -58,7 +24,7 @@ class AuthService {
       User user = result.user!;
       return _userFromFirebase(user);
     } on FirebaseAuthException catch (e) {
-      print(e);
+      print('exception : $e');
       return null;
     }
   }

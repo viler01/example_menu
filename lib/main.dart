@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/RouteGenerator.dart';
 import 'package:example_menu/models/language_model.dart';
@@ -6,9 +5,15 @@ import 'package:example_menu/screens/HomePage.dart';
 import 'package:example_menu/screens/staffScreen/LoginScreen.dart';
 import 'package:example_menu/screens/staffScreen/StaffAddScreen.dart';
 import 'package:example_menu/screens/staffScreen/StaffHomepage.dart';
+import 'services/imports.dart';
+
+void main() async{
 
 
-void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

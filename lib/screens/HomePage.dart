@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:example_menu/GlobalVariable.dart';
-import 'package:example_menu/models/food_model.dart';
 import 'package:example_menu/models/language_model.dart';
-import 'package:example_menu/widgets/GeneralWidget/CustomExpansionTile.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/costumersWidgets/FoodCardMenu.dart';
+import '../services/imports.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,7 +45,10 @@ class _HomePageState extends State<HomePage> {
                   title: const Text('Staff Login'),
                   onTap: (){
                     Navigator.pop(context);
-                    Navigator.pushNamed(context, "/login");
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return LoginScreen();
+                        }));
                   },
                 )
               ],

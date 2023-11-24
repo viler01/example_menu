@@ -1,10 +1,25 @@
 import 'package:example_menu/GlobalVariable.dart';
 import 'package:flutter/material.dart';
-import 'package:example_menu/widgets/GeneralWidget/CustomTextField.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
+import '../../services/imports.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  bool showLoading = false;
+
+  bool showPassword = true;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController email = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,63 +31,171 @@ class LoginScreen extends StatelessWidget {
         painter: MyBackground(),
         child: Container(
           width: double.infinity,
-          child: SafeArea(
-              child: LayoutBuilder(
-              builder: (context, constraints){
-                if( constraints.maxWidth > horizontalLayout){
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(height: double.infinity,),
-                      SizedBox(
-                        width: constraints.maxWidth*0.6,
-                        height: constraints.maxHeight,
-                        child: const LogoImage(),
-                      ),
-                      SizedBox(
-                        width: constraints.maxWidth*0.4,
-                        height: constraints.maxHeight,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(height: constraints.maxHeight*.4,),
-                              UsernameTextField(),
-                              PasswordTextField(),
-                              LoginButton(),
-                            ],
+          child: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth > horizontalLayout) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: double.infinity,
+                  ),
+                  SizedBox(
+                    width: constraints.maxWidth * 0.6,
+                    height: constraints.maxHeight,
+                    child: const LogoImage(),
+                  ),
+                  SizedBox(
+                    width: constraints.maxWidth * 0.4,
+                    height: constraints.maxHeight,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            height: constraints.maxHeight * .4,
                           ),
-                        ),
-                      ),
+                          CustomTextField(
+                            controller: emailController,
+                            labelText: "E-Mail ",
+                            validator: (value) {
+                              String pattern = r'\w+@\w+\.\w+';
+                              RegExp regex = RegExp(pattern);
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your email';
+                              } else {
+                                if (!regex.hasMatch(emailController.text)) {
+                                  return 'Invalid Email Address format';
+                                }
+                                return null;
+                              }
+                            },
+                          ),
+                          CustomTextField(
+                            controller: password,
+                            obscureText: showPassword,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your password';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              print('email : ${emailController.text}');
+                              print('pass : ${password.text}');
 
-                    ],
-                  );
-                }else{
-                  return Column(
-                    children: [
-                      SizedBox(
-                          width: constraints.maxWidth,
-                          height: constraints.maxHeight*0.5,
-                          child: const LogoImage()
-                      ),
-                      SizedBox(
-                        width: constraints.maxWidth,
-                        height: constraints.maxHeight*0.4,
-                        child: const SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              UsernameTextField(),
-                              PasswordTextField(),
-                              LoginButton(),
-                            ],
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              setState(() => showLoading = true);
+                              await AuthService()
+                                  .loginWithEmailAndPassword(
+                                  email: emailController.text, password: password.text)
+                                  .then((state) {
+                                setState(() => showLoading = false);
+                                Navigator.of(context)
+                                    .pushReplacementNamed(AppDirector.id);
+                                if (state == null) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Not authenticated, please check email and password'),
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+
+                            child: const Text('Log In'),
                           ),
-                        ),
-                      )
-                    ],
-                  );
-                }
-              })),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                children: [
+                  SizedBox(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight * 0.5,
+                      child: const LogoImage()),
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight * 0.4,
+                    child:  SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomTextField(
+                            labelText: "E-Mail ",
+                            controller: emailController,
+                            validator: (value) {
+                              String pattern = r'\w+@\w+\.\w+';
+                              RegExp regex = RegExp(pattern);
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your email';
+                              } else {
+                                if (!regex.hasMatch(emailController.text)) {
+                                  return 'Invalid Email Address format';
+                                }
+                                return null;
+                              }
+                            },
+                          ),
+                          CustomTextField(
+                            controller: password,
+                            obscureText: showPassword,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your password';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              print('email : ${emailController.text}');
+                              print('pass : ${password.text}');
+
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              setState(() => showLoading = true);
+                              await AuthService()
+                                  .loginWithEmailAndPassword(
+                                  email: emailController.text, password: password.text)
+                                  .then((state) {
+                                setState(() => showLoading = false);
+                                Navigator.of(context)
+                                    .pushReplacementNamed(AppDirector.id);
+                                if (state == null) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Not authenticated, please check email and password'),
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+
+                            child: const Text('Log In'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
+            }
+          })),
         ),
       ),
     );
@@ -87,10 +210,10 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: (){
-          Navigator.pushNamed(context, "/staffHomePage");
-        },
-        child: const Text('Login'),
+      onPressed: () {
+        Navigator.pushNamed(context, "/staffHomePage");
+      },
+      child: const Text('Login'),
     );
   }
 }
@@ -120,16 +243,13 @@ class PasswordTextField extends StatelessWidget {
 }
 
 class UsernameTextField extends StatelessWidget {
-  const UsernameTextField({
-    super.key,
-  });
+  final TextEditingController controller;
+
+  UsernameTextField({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
-      labelText: "USERNAME",
     );
   }
 }
-
-

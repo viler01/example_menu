@@ -20,23 +20,5 @@ class DatabaseUser {
     return userCollection.doc(uid).snapshots().map(userDataFromSnapshot);
   }
 
-  Future addFood({required UserData? userdata, required Food food}) async {
-    CollectionReference<Map<String, dynamic>> foodList =
-        userCollection.doc(userdata!.uid).collection('food');
 
-    foodList.add({
-      'active': food.active,
-      'name': food.name,
-      'id': food.id,
-      'course': food.course.toString(),
-      'price': food.price,
-      'imageURL': food.imageURL,
-      'descriptionIT': food.descriptionIT,
-      'descriptionING': food.descriptionING,
-      'descriptionDE': food.descriptionDE,
-      'descriptionFR': food.descriptionFR,
-    }).then((value) {
-      foodList.doc(value.id).update({'id': value.id});
-    });
-  }
 }

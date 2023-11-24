@@ -1,3 +1,5 @@
+import 'package:example_menu/models/allergen_model.dart';
+
 import '../imports.dart';
 
 class DatabaseFood {
@@ -42,240 +44,159 @@ class DatabaseFood {
 
   static Food? foodFromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    switch (snapshot.data()?['course']) {
-      case 'Course.appetizers':
+    switch (snapshot.data()?['category']) {
+      case 'FoodCategory.aperitifs':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.appetizers,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.aperitifs,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.firstCourse':
+      case 'FoodCategory.appetizers':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.firstCourse,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.appetizers,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.secondCourse':
+      case 'FoodCategory.mainDishes':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.secondCourse,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.mainDishes,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.side':
+      case 'FoodCategory.secondCourses':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.side,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.secondCourses,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.dessert':
+      case 'FoodCategory.sideDishes':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.dessert,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.sideDishes,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.drink':
+      case 'FoodCategory.dessert':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.drink,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.dessert,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.beer':
+      case 'FoodCategory.beers':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.beer,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.beers,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.wine':
+      case 'FoodCategory.nonAlcoholic':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.wine,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.nonAlcoholic,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
-      case 'Course.ape':
+      case 'FoodCategory.wines':
         return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
+          allergens: snapshot.data()?['allergens'] != null
+              ? (snapshot.data()?['allergens'] as List<Allergens>)
+              .map((item) => item as Allergens)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
+          nameITA: snapshot.data()?['nameITA'] ?? "",
           price: snapshot.data()?['price'] ?? 0,
           id: snapshot.data()?['id'] ?? "",
-          course: Course.ape,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.softDrink':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.softDrink,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.coffee':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.coffee,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.amaro':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.amaro,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.baby':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.baby,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
+          category: FoodCategory.wines,
+          image: snapshot.data()?['image'] ?? "",
+          nameENG: snapshot.data()?['nameENG'] ?? "",
+          descriptionITA: snapshot.data()?['descriptionITA'] ?? "",
+          descriptionENG: snapshot.data()?['descriptionENG'] ?? "",
         );
 
     }
@@ -290,257 +211,6 @@ class DatabaseFood {
 
   static Stream<List<Food?>> get allFood =>
       foodCollection.snapshots().map(foodListFromSnapshot);
-
-
-  ///************************************************************
-  static Food? foodFromSnapshot2(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    switch (snapshot.data()?['course']) {
-      case 'Course.appetizers':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.appetizers,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.firstCourse':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.firstCourse,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.secondCourse':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.secondCourse,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.side':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.side,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.dessert':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.dessert,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.drink':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.drink,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.beer':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.beer,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.wine':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.wine,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.ape':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.ape,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.softDrink':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.softDrink,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.coffee':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.coffee,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.amaro':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.amaro,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-      case 'Course.baby':
-        return Food(
-          allergy: snapshot.data()?['allergy'] != null
-              ? (snapshot.data()?['allergy'] as List)
-              .map((item) => item as String)
-              .toList()
-              : [],
-          active: snapshot.data()?['active'] ?? false,
-          name: snapshot.data()?['name'] ?? "",
-          price: snapshot.data()?['price'] ?? 0,
-          id: snapshot.data()?['id'] ?? "",
-          course: Course.baby,
-          imageURL: snapshot.data()?['imageURL'] ?? "",
-          descriptionING: snapshot.data()?['descriptionING'] ?? "",
-          descriptionIT: snapshot.data()?['descriptionIT'] ?? "",
-          descriptionDE: snapshot.data()?['descriptionDE'] ?? "",
-          descriptionFR: snapshot.data()?['descriptionFR'] ?? "",
-        );
-
-    }
-  }
-
-
-  static List<Food?> foodListFromSnapshot2(
-      QuerySnapshot<Map<String, dynamic>> snapshot) =>
-      snapshot.docs.map((snapshot) => foodFromSnapshot2(snapshot)).toList();
-
-  static Stream<List<Food?>> get allFood2 =>
-      foodCollection2.snapshots().map(foodListFromSnapshot2);
 
 
 
