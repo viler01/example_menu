@@ -15,30 +15,28 @@ class DatabaseFood {
   Future createEdit({required Food food, required bool isEdit}) async {
     return isEdit
         ? await foodCollection.doc(food.id).update({
-            'allergy' :food.allergy,
-            'name': food.name,
+            'allergens' :food.allergens,
+            'nameITA': food.nameITA,
             'active': food.active,
             'id': food.id,
-            'course': food.course.toString(),
+            'category': food.category.toString(),
             'price': food.price,
-            'imageURL': food.imageURL,
-            'descriptionIT': food.descriptionIT,
-            'descriptionING': food.descriptionING,
-            'descriptionDE': food.descriptionDE,
-            'descriptionFR': food.descriptionFR,
+            'image': food.image,
+            'descriptionITA': food.descriptionITA,
+            'descriptionENG': food.descriptionENG,
+            'nameENG': food.nameENG
           })
         : await foodCollection.doc(food.id).set({
-      'allergy' :food.allergy,
-            'name': food.name,
-            'active': food.active,
-            'id': food.id,
-            'course': food.course.toString(),
-            'price': food.price,
-            'imageURL': food.imageURL,
-            'descriptionIT': food.descriptionIT,
-            'descriptionING': food.descriptionING,
-            'descriptionDE': food.descriptionDE,
-            'descriptionFR': food.descriptionFR,
+           'allergens' :food.allergens,
+           'nameITA': food.nameITA,
+           'active': food.active,
+           'id': food.id,
+           'category': food.category.toString(),
+           'price': food.price,
+           'image': food.image,
+           'descriptionITA': food.descriptionITA,
+           'descriptionENG': food.descriptionENG,
+           'nameENG': food.nameENG
           });
   }
 
@@ -544,46 +542,6 @@ class DatabaseFood {
   static Stream<List<Food?>> get allFood2 =>
       foodCollection2.snapshots().map(foodListFromSnapshot2);
 
-/*
-  Future<Food> getSingleFood({required String id}) async {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('foods').doc(id);
-
-    await documentReference.get().then((DocumentSnapshot? documentSnapshot) {
-      String id = documentSnapshot!['id'];
-      bool active = documentSnapshot['active'];
-      String name = documentSnapshot['name'];
-      double price = documentSnapshot['price'];
-      String descriptionIT = documentSnapshot['descriptionIT'];
-      String descriptionING = documentSnapshot['descriptionIT'];
-      String descriptionFR = documentSnapshot['descriptionIT'];
-      String descriptionDE = documentSnapshot['descriptionIT'];
-      String imageURL = documentSnapshot['imageURL'];
-      Course course = documentSnapshot['course'];
-      return Food(
-          name: name,
-          active: active,
-          course: course,
-          price: price,
-          id: id,
-          descriptionDE: descriptionDE,
-          descriptionFR: descriptionFR,
-          descriptionING: descriptionING,
-          descriptionIT: descriptionIT,
-          imageURL: imageURL);
-    });
-    return Food(
-        name: '',
-        course: Course.appetizers,
-        active: false,
-        price: 0,
-        id: 'id',
-        descriptionDE: 'descriptionDE',
-        descriptionFR: 'descriptionFR',
-        descriptionING: '',
-        descriptionIT: 'descriptionIT',
-        imageURL: 'imageURL');
-  }*/
 
 
 }
