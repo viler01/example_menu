@@ -13,8 +13,64 @@ class StaffHomepage extends StatefulWidget {
 }
 
 class _StaffHomepageState extends State<StaffHomepage> {
+
+  late Stream<List<Food?>> myStream;
+
+  @override
+  void initState( ) {
+
+    myStream = DatabaseFood.allFood;
+
+    super.initState();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
+   /*
+    List<Food?> allFood;
+
+    Future <void> refreshFood() async{
+
+      DatabaseFood databaseFood=DatabaseFood();
+
+      setState(() {
+        allFood= databaseFood.getAllFood();
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.aperitifs'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.appetizers'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.mainDishes'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.mainDishes'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.sideDishes'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.dessert'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.nonAlcoholic'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.beers'));
+        allFoodInList.add(getRightFood(
+            allFood, 'FoodCategory.wines'));
+
+      });
+      for(List<Food?> element  in allFoodInList){
+        for(Food? f in element){
+          if(f != null){
+            print(f.id);
+          }
+        }
+      }
+
+    }
+
+*/
     return Scaffold(
       body: CustomPaint(
         painter: MyBackground(),
@@ -25,27 +81,119 @@ class _StaffHomepageState extends State<StaffHomepage> {
               child: Column(
                 children: [
                   StaffTitle(title: 'Gestione del menù'),
-
                   Padding(
                     padding: const EdgeInsets.all(30.0),
-                    child: LayoutBuilder
-                      (builder: (context, constraints){
-                        return StaffLayoutBuilder(
-                            maxWidth: constraints.maxWidth,
-                            children: [
-                              for(var foodCategory in FoodCategory.values)CustomExpansionTile(
-                                  title: translateFodCategory(foodCategory: foodCategory),
-                                children: [
-                                  for(var food in provaListaMenu)if(food.category == foodCategory)StaffActiveFoodCard(
-                                    food: food,
-                                    onChanged: (value){},
-                                  )
-                                ],
-                              )
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      return StaffLayoutBuilder(
+                          maxWidth: constraints.maxWidth,
+                          children: [
+                            StreamBuilder<List<Food?>>(
+                                stream: myStream,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<Food?>> snapshot) {
+                                  if (snapshot.hasError) {
+                                    print(snapshot.error);
+                                    return const Text('Something went wrong');
+                                  }
 
-                            ]);
-                    }
-                    ),
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const LoadingWidget();
+                                  }
+
+                                 // refreshFood();
+
+                                  List<Food?> allFood = snapshot.data!;
+
+                                  List<Food?> aperitifsList = getRightFood(
+                                      allFood, 'FoodCategory.aperitifs');
+                                  List<Food?> appetizersList = getRightFood(
+                                      allFood, 'FoodCategory.appetizers');
+                                  List<Food?> maindishesList = getRightFood(
+                                      allFood, 'FoodCategory.mainDishes');
+                                  List<Food?> secondCoursesList = getRightFood(
+                                      allFood, 'FoodCategory.secondCourses');
+                                  List<Food?> sideDishesList = getRightFood(
+                                      allFood, 'FoodCategory.sideDishes');
+                                  List<Food?> dessertList = getRightFood(
+                                      allFood, 'FoodCategory.dessert');
+                                  List<Food?> nonAlcoholicList = getRightFood(
+                                      allFood, 'FoodCategory.nonAlcoholic');
+                                  List<Food?> beersList = getRightFood(
+                                      allFood, 'FoodCategory.beers');
+                                  List<Food?> winesList = getRightFood(
+                                      allFood, 'FoodCategory.wines');
+
+                                  List<List<Food?>> allFoodInList=[
+                                    secondCoursesList,
+                                    appetizersList,
+                                    aperitifsList,
+                                    maindishesList,
+                                    sideDishesList,
+                                    dessertList,
+                                    nonAlcoholicList,
+                                    beersList,
+                                    winesList,
+                                  ];
+
+                                  print(FoodCategory.values.length);
+                                  for(Food? element in allFood){
+                                    print(element!.id);
+                                  }
+
+                                  for(List<Food?> list in allFoodInList){
+                                    print(list.length);
+                                    for(Food? element in list){
+                                      print(element!.id);
+                                    }
+                                  }
+                                  return Column(
+                                    children: [
+                                  for (int i =0; i<FoodCategory.values.length;i++)...
+                                  [
+                                    CustomExpansionTile(
+                                      title: translateFodCategory(
+                                          foodCategory: FoodCategory.values[i]),
+                                      children: [
+                                        allFoodInList[i].isEmpty
+                                            ? Center(
+                                            child: Center(
+                                              child: Text(
+                                                'not already inserted ',
+                                              ),
+                                            ))
+                                            : Padding(
+                                          padding:
+                                          const EdgeInsets.all(8.0),
+                                          child: ListView.builder(
+                                            physics:
+                                            const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection:
+                                            Axis.vertical,
+                                            itemBuilder:
+                                                (context, int index) {
+                                              return StaffActiveFoodCard(
+                                                food: allFoodInList[i][index]!,
+                                                active: (value) {},
+                                                edit: () {},
+                                              );
+                                            },
+                                            itemCount: allFoodInList[i].length,
+                                          ),
+                                        )
+                                      ],
+                                    )
+
+                                  ]
+                                    ]
+                                  );
+
+
+
+                                }),
+                          ]);
+                    }),
                   ),
                 ],
               ),
@@ -59,35 +207,31 @@ class _StaffHomepageState extends State<StaffHomepage> {
 }
 
 class StaffLayoutBuilder extends StatelessWidget {
-  StaffLayoutBuilder({
-    super.key,
-    required this.maxWidth,
-    required this.children
-  });
+  StaffLayoutBuilder(
+      {super.key, required this.maxWidth, required this.children});
+
   final double maxWidth;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    switch(maxWidth){
+    switch (maxWidth) {
       case > horizontalLayout:
-
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: maxWidth/2,
+              width: maxWidth / 2,
               child: Column(
-                children: children.sublist(0,children.length~/2),
+                children: children.sublist(0, children.length ~/ 2),
               ),
             ),
             Container(
-              width: maxWidth/2,
+              width: maxWidth / 2,
               child: Column(
-                children: children.sublist(children.length~/2),
+                children: children.sublist(children.length ~/ 2),
               ),
             )
-
           ],
         );
       default:
@@ -97,4 +241,3 @@ class StaffLayoutBuilder extends StatelessWidget {
     }
   }
 }
-

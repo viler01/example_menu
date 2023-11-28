@@ -6,10 +6,12 @@ class StaffActiveFoodCard extends StatefulWidget {
   const StaffActiveFoodCard({
     super.key,
     required this.food,
-    required this.onChanged,
+    required this.active,
+    required this.edit
   });
   final Food food;
-  final Function(bool) onChanged;
+  final Function(bool) active;
+  final Function edit;
 
   @override
   State<StaffActiveFoodCard> createState() => _StaffActiveFoodCardState();
@@ -38,7 +40,7 @@ class _StaffActiveFoodCardState extends State<StaffActiveFoodCard> {
               setState(() {
                 active = value;
               });
-              widget.onChanged(value);
+              widget.active(value);
             }),
         trailing: IconButton(
             onPressed: (){},

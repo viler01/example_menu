@@ -208,7 +208,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                       Storage storage = Storage();
                                       try{
                                         String? url = await storage.uploadImage(_fileBytes!, id);
-                                        print(url);
+
                                       }catch(e){
                                         print(e);
                                       }
@@ -234,13 +234,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                     }
                                   }catch(e){
                                     print(e);
-                                    print(nameIT.text);
-                                    print(_fileBytes);
-                                    print(price.text.toString());
-                                    print(descriptionENG.text);
-                                    print(dropDownValue);
-                                    for(var allergen in foodAllegyList)
-                                      print(allergen);
+
                                   }
 
                                 },
@@ -337,7 +331,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                     Storage storage = Storage();
                                     try{
                                       String? url = await storage.uploadImage(_fileBytes!, id);
-                                      print(url);
+
                                     }catch(e){
                                       print(e);
                                     }
@@ -363,13 +357,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                   }
                                 }catch(e){
                                   print(e);
-                                  print(nameIT.text);
-                                  print(_fileBytes);
-                                  print(price.text.toString());
-                                  print(descriptionENG.text);
-                                  print(dropDownValue);
-                                  for(var allergen in foodAllegyList)
-                                    print(allergen);
+
                                 }
 
                               },
