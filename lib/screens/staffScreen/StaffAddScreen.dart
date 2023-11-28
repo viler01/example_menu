@@ -1,21 +1,78 @@
-import 'package:flutter/material.dart';
-import 'package:example_menu/GlobalVariable.dart';
+import '../../services/imports.dart';
 import 'package:example_menu/models/allergen_model.dart';
-import 'package:example_menu/models/food_model.dart';
-import 'package:example_menu/widgets/GeneralWidget/CustomTextField.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/costumersWidgets/alleargenWidgets.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffBottomBar.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffTitle.dart';
 
 class StaffAddScreen extends StatefulWidget {
-  StaffAddScreen({super.key});
+  const StaffAddScreen({super.key});
 
   @override
   State<StaffAddScreen> createState() => _StaffAddScreenState();
 }
 
 class _StaffAddScreenState extends State<StaffAddScreen> {
+  DatabaseUser databaseUser = DatabaseUser();
+  final _formKey = GlobalKey<FormState>();
+
+  bool showLoading = false;
+
+  Uint8List? _fileBytes;
+  String error = '';
+  String imageName = '';
+
+  Future<void> pickImage() async {
+
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+    if (mounted) {
+      setState(() {
+        setState(() {
+          _fileBytes = result.files.first.bytes;
+          imageName = result.files.first.name;
+        });
+      });
+    }
+  }
+
+
+  TextEditingController nameIT = TextEditingController();
+  TextEditingController nameENG = TextEditingController();
+  TextEditingController descriptionITA = TextEditingController();
+  TextEditingController descriptionENG = TextEditingController();
+  TextEditingController price = TextEditingController();
+
+  FoodCategory foodCategory = FoodCategory.mainDishes;
+  List<String> foodAllegyList = [];
+  List<Allergens> allAllergensList = [ Allergens.fish,
+    Allergens.lupins,
+    Allergens.shellfish,
+    Allergens.eggs,
+    Allergens.milk,
+    Allergens.sulphite,
+    Allergens.gluten,
+    Allergens.soya,
+    Allergens.nuts,
+    Allergens.sesame,
+    Allergens.crustacen,
+    Allergens.mustard,
+    Allergens.mustard,
+    Allergens.celery];
+
+  List<bool> boolList = [false, false, false,
+    false, false, false,
+    false, false, false,
+    false, false, false,
+    false, false];
+
+  var dropDownValue = FoodCategory.values.first;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,77 +83,307 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
         child: Container(
           height: double.infinity,
           child: SafeArea(
-            child: LayoutBuilder(
-                builder: (context, constraints){
-                  if(constraints.maxWidth > horizontalLayout){
-                    return const CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: StaffTitle(title: 'Aggiungi Portata',),
-                        ),
-                        SliverCrossAxisGroup(
-                            slivers: [
-                              SliverMainAxisGroup(
-                                  slivers: [
-                                    SliverToBoxAdapter(
-                                      child: Name(),
-                                    ),
-                                    SliverToBoxAdapter(
-                                      child: Price(),
-                                    ),
-                                  ]
+              child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth > horizontalLayout) {
+                      return  CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: StaffTitle(title: 'Aggiungi Portata',),
+                          ),
+                          SliverCrossAxisGroup(
+                              slivers: [
+                                SliverMainAxisGroup(
+                                    slivers: [
+                                      SliverToBoxAdapter(
+                                        child: Name(
+                                          nameENG: nameENG,
+                                          nameITA: nameIT,
+                                        ),
+                                      ),
+                                      SliverToBoxAdapter(
+                                        child: Price(price: price,),
+                                      ),
+                                    ]
+                                ),
+                                SliverMainAxisGroup(
+                                    slivers: [
+                                      SliverToBoxAdapter(
+                                        child: Description(descriptionITA: descriptionITA,descriptionENG: descriptionENG,),
+                                      ),
+                                      SliverToBoxAdapter(
+                                        child:  Container(
+                                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("CATEGORIA:", style: addTextStile,),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 15),
+                                                child: DropdownButton(
+
+                                                  items: FoodCategory.values.map<DropdownMenuItem<FoodCategory>>((FoodCategory value) {
+                                                    return DropdownMenuItem<FoodCategory>(
+                                                      value: value,
+                                                      child: Text(translateFodCategory(foodCategory: value)),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (value){
+                                                    setState(() {
+                                                      dropDownValue = value!;
+                                                      print(dropDownValue);
+                                                    });
+                                                  },
+                                                  value: dropDownValue,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SliverToBoxAdapter(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                          child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text("IMMAGINE:", style: addTextStile,),
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                                                        border: Border.all(
+                                                          color: mainColor,
+                                                        )
+                                                    ),
+                                                    child: TextButton(
+                                                      onPressed:pickImage,
+                                                      child: Text('Inserisci immagine'),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ]
+                                          ),
+                                        ),
+                                      ),
+                                      SliverToBoxAdapter(
+                                        child:     Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: _fileBytes == null
+                                                ? Text('no image selected')
+                                                : Image.memory(
+                                              _fileBytes!,
+                                              fit: BoxFit.cover,
+                                              width: 100,
+                                              height: 100,
+                                            ),
+                                        ) ,
+                                      )
+                                    ]
+                                ),
+                              ]
+                          ),
+                          AllergensCheckGrid(
+                            allAllergenList: allAllergensList,
+                            allergenList: foodAllegyList,
+                          ),
+                          SliverToBoxAdapter(
+                              child:TextButton(
+                                style:
+                                ButtonStyle(minimumSize: MaterialStateProperty.all(Size(100, 100))),
+                                onPressed: () async {
+                                  DatabaseFood databaseFood = DatabaseFood();
+                                  try{
+                                    if (_fileBytes == null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('inserire un immagine valida'),
+                                        ),
+                                      );
+                                    } else {
+                                      const uuid = Uuid();
+                                      String id = uuid.v1();
+
+                                      Storage storage = Storage();
+                                      try{
+                                        String? url = await storage.uploadImage(_fileBytes!, id);
+                                        print(url);
+                                      }catch(e){
+                                        print(e);
+                                      }
+
+                                      //storage.uploadImage(fileBytes!, id);
+
+                                      Food food = Food(
+                                          id: id,
+                                          nameITA: nameIT.text,
+                                          nameENG: nameENG.text,
+                                          price: double.parse(price.text),
+                                          descriptionENG: descriptionENG.text,
+                                          descriptionITA: descriptionITA.text,
+                                          image: 'aaaa',
+                                          category: dropDownValue,
+                                          active: true,
+                                          allergens: foodAllegyList
+                                      );
+
+                                      await databaseFood.createEdit(food: food, isEdit: false).then((value) {
+                                        Navigator.pop(context);
+                                      });
+                                    }
+                                  }catch(e){
+                                    print(e);
+                                    print(nameIT.text);
+                                    print(_fileBytes);
+                                    print(price.text.toString());
+                                    print(descriptionENG.text);
+                                    print(dropDownValue);
+                                    for(var allergen in foodAllegyList)
+                                      print(allergen);
+                                  }
+
+                                },
+                                child: Text(
+                                  'Aggiungi',
+                                  style: addTextStile,
+                                ),
                               ),
-                              SliverMainAxisGroup(
-                                  slivers: [
-                                    SliverToBoxAdapter(
-                                      child: Description(),
+                          )
+                        ],
+                      );
+                    } else {
+                      return CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: StaffTitle(title: 'Aggiungi Portata',),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Name(
+                              nameENG: nameENG,
+                              nameITA: nameIT,
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Description(descriptionITA: descriptionITA,descriptionENG: descriptionENG,),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Price(price: price,),
+                          ),
+                          SliverToBoxAdapter(
+                            child:  Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("CATEGORIA:", style: addTextStile,),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: DropdownButton(
+
+                                      items: FoodCategory.values.map<DropdownMenuItem<FoodCategory>>((FoodCategory value) {
+                                        return DropdownMenuItem<FoodCategory>(
+                                          value: value,
+                                          child: Text(translateFodCategory(foodCategory: value)),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value){
+                                        setState(() {
+                                          dropDownValue = value!;
+                                          print(dropDownValue);
+                                        });
+                                      },
+                                      value: dropDownValue,
                                     ),
-                                    SliverToBoxAdapter(
-                                      child: Category(),
-                                    ),
-                                    SliverToBoxAdapter(
-                                      child: FoodImage(),
-                                    )
-                                  ]
+                                  ),
+                                ],
                               ),
-                            ]
-                        ),
-                        AllergensCheckGrid(),
-                        SliverToBoxAdapter(
-                            child: SubmitButton()
-                        )
-                      ],
-                    );
-                  }else{
-                    return CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: StaffTitle(title: 'Aggiungi Portata',),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Name(),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Description(),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Price(),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Category(),
-                        ),
-                        SliverToBoxAdapter(
-                          child: FoodImage(),
-                        ),
-                        AllergensCheckGrid(),
-                        SliverToBoxAdapter(
-                          child: SubmitButton(),
-                        )
-                      ],
-                    );
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child:  Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: _fileBytes == null
+                                  ? Text('no image selected')
+                                  : Image.memory(
+                                _fileBytes!,
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            ) ,
+                          ),
+                          AllergensCheckGrid(
+                            allAllergenList: allAllergensList,
+                            allergenList: foodAllegyList,
+                          ),
+                          SliverToBoxAdapter(
+                            child: TextButton(
+                              style:
+                              ButtonStyle(minimumSize: MaterialStateProperty.all(Size(100, 100))),
+                              onPressed: () async {
+                                DatabaseFood databaseFood = DatabaseFood();
+                                try{
+                                  if (_fileBytes == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('inserire un immagine valida'),
+                                      ),
+                                    );
+                                  } else {
+                                    const uuid = Uuid();
+                                    String id = uuid.v1();
+
+                                    Storage storage = Storage();
+                                    try{
+                                      String? url = await storage.uploadImage(_fileBytes!, id);
+                                      print(url);
+                                    }catch(e){
+                                      print(e);
+                                    }
+
+                                    //storage.uploadImage(fileBytes!, id);
+
+                                    Food food = Food(
+                                        id: id,
+                                        nameITA: nameIT.text,
+                                        nameENG: nameENG.text,
+                                        price: double.parse(price.text),
+                                        descriptionENG: descriptionENG.text,
+                                        descriptionITA: descriptionITA.text,
+                                        image: 'aaaa',
+                                        category: dropDownValue,
+                                        active: true,
+                                        allergens: foodAllegyList
+                                    );
+
+                                    await databaseFood.createEdit(food: food, isEdit: false).then((value) {
+                                      Navigator.pop(context);
+                                    });
+                                  }
+                                }catch(e){
+                                  print(e);
+                                  print(nameIT.text);
+                                  print(_fileBytes);
+                                  print(price.text.toString());
+                                  print(descriptionENG.text);
+                                  print(dropDownValue);
+                                  for(var allergen in foodAllegyList)
+                                    print(allergen);
+                                }
+
+                              },
+                              child: Text(
+                                'Aggiungi',
+                                style: addTextStile,
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    }
                   }
-                }
-            )
+              )
           ),
         ),
       ),
@@ -104,72 +391,26 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
   }
 }
 
-class FoodImage extends StatelessWidget {
-  const FoodImage({
-    super.key,
-  });
+
+
+class AllergensCheckGrid extends StatefulWidget {
+ final List<String> allergenList ;
+ final List<Allergens> allAllergenList ;
+
+ AllergensCheckGrid({required this.allergenList, required this.allAllergenList});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("IMMAGINE:", style: addTextStile,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                  border: Border.all(
-                    color: mainColor,
-                  )
-                ),
-                child: TextButton(
-                  onPressed: (){},
-                  child: Text('Inserisci immagine'),
-                ),
-              ),
-            ),
-          ]
-      ),
-    );
-  }
+  State<AllergensCheckGrid> createState() => _AllergensCheckGridState();
 }
 
-class SubmitButton extends StatelessWidget {
-  const SubmitButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(Size(100,100))
-      ),
-        onPressed: (){},
-        child: Text(
-            'Aggiungi',
-          style: addTextStile,
-      ),
-    );
-  }
-}
-
-class AllergensCheckGrid extends StatelessWidget {
-  const AllergensCheckGrid({
-    super.key,
-  });
-
+class _AllergensCheckGridState extends State<AllergensCheckGrid> {
   @override
   Widget build(BuildContext context) {
     return SliverMainAxisGroup(
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: Container(
-            width: double.infinity,
+              width: double.infinity,
               alignment: Alignment.center,
               child: Text("ALLERGENI:", style: addTextStile,)),
         ),
@@ -180,10 +421,34 @@ class AllergensCheckGrid extends StatelessWidget {
                 crossAxisCount: division,
                 childAspectRatio: 5/1,
                 children: [
-                  for(var allergen in Allergen.returnAllergen(Allergens.values))AllergensCheckListTile(
+                  /*
+                  for(var allergen in Allergen.returnAllergen(Allergens.values))
+                    AllergensCheckListTile(
                     allergen: allergen,
-                    onChange: (value){},
-                  ),
+                    onChange: (value){
+
+                    },
+                  ),*/
+                  for(int i=0; i< Allergen.returnAllergen(Allergens.values).length; i++)
+                    AllergensCheckListTile(
+                    allergen: Allergen.returnAllergen(Allergens.values)[i],
+                    onChange: (value){
+                         if(value){
+                           setState(() {
+                             widget.allergenList.add(widget.allAllergenList[i].toString());
+                             for(var all in widget.allergenList)
+                               print(all);
+                           });
+                         }
+                         else{
+                           setState(() {
+                             widget.allergenList.remove(widget.allAllergenList[i]);
+
+                           });
+                         }
+                             },
+                        )
+
                 ],
               );
             }
@@ -215,11 +480,11 @@ class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
     return Container(
       margin: EdgeInsets.all(2),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        border: Border.all(
-            width: 1,
-            color: Colors.black
-        )
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+              width: 1,
+              color: Colors.black
+          )
       ),
       child: ListTile(
         title: Text(translateAllergen(widget.allergen)),
@@ -229,6 +494,7 @@ class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
             onChanged: (value){
               setState(() {
                 addingAllergen = value!;
+
               });
               widget.onChange(value!);
             }
@@ -237,110 +503,12 @@ class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
           setState(() {
             addingAllergen = !addingAllergen;
           });
-          widget.onChange(addingAllergen!);
+          widget.onChange(addingAllergen);
         },
       ),
     );
   }
 }
 
-class Category extends StatefulWidget {
-  const Category({super.key});
-
-  @override
-  State<Category> createState() => _CategoryState();
-}
-
-class _CategoryState extends State<Category> {
-  var dropDownValue = FoodCategory.values.first;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("CATEGORIA:", style: addTextStile,),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: DropdownButton(
-              items: FoodCategory.values.map<DropdownMenuItem<FoodCategory>>((FoodCategory value) {
-                return DropdownMenuItem<FoodCategory>(
-                  value: value,
-                  child: Text(translateFodCategory(foodCategory: value)),
-                );
-              }).toList(),
-              onChanged: (value){
-                setState(() {
-                  dropDownValue = value!;
-                });
-              },
-              value: dropDownValue,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 
-class Price extends StatelessWidget {
-  const Price({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("PREZZO", style: addTextStile,),
-        CustomTextField(
-          labelText: "PREZZO",
-          prefixText: "€  ",
-          keyboardType: TextInputType.numberWithOptions(decimal: true),
-        )
-      ],
-    );
-  }
-}
-
-class Description extends StatelessWidget {
-  const Description({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("DESCIZIONE", style: addTextStile,),
-        //DESCIZIONE ITALIANO
-        CustomTextField(labelText: "ITALIANO",),
-
-        //DESCIZIONE INGLESE
-        CustomTextField(labelText: "INGLESE",),
-      ],
-    );
-  }
-}
-
-class Name extends StatelessWidget {
-  const Name({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("NOME",style: addTextStile,),
-        //NOME ITALIANO
-        CustomTextField(labelText: "ITALIANO",),
-
-        //NOME INGLESE
-        CustomTextField(labelText: "INGLESE",)
-      ],
-    );
-  }
-}

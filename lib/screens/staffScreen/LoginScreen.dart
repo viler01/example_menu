@@ -93,10 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           TextButton(
                             onPressed: () async {
-                              print('email : ${emailController.text}');
-                              print('pass : ${password.text}');
-                              print(email);
-                              print(pass);
 
                               setState(() => showLoading = true);
                               await AuthService()
@@ -104,10 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   email: email, password: password.text)
                                   .then((state) {
                                 setState(() => showLoading = false);
-                                /*
-                                Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return StaffHomepage();
-                                }));*/
                                 Navigator.of(context)
                                     .pushReplacementNamed(AppDirector.id);
 
@@ -189,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   .loginWithEmailAndPassword(
                                   email: email, password: password.text)
                                   .then((state) {
-                                    print('ok');
+
                                 setState(() => showLoading = false);
                                     Navigator.of(context)
                                         .pushReplacementNamed(AppDirector.id);

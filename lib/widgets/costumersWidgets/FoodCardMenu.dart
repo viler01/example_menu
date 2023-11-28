@@ -1,3 +1,4 @@
+import 'package:example_menu/models/allergen_model.dart';
 import 'package:flutter/material.dart';
 import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/models/food_model.dart';
@@ -16,6 +17,9 @@ class FoodCardMenu extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+
+    List<Allergens> allergenList = stringToAllergens(food.allergens);
+
     return Container(
       margin: const EdgeInsets.all(12),
       height: cardHeight,
@@ -60,7 +64,7 @@ class FoodCardMenu extends StatelessWidget {
                     ),
                   ),
                   Text("€${food.price}"),
-                  AllergenRow(allergensList: food.allergens)
+                  AllergenRow(allergensList: allergenList)
                 ],
               ),
             ),

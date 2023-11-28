@@ -48,8 +48,8 @@ class DatabaseFood {
       case 'FoodCategory.aperitifs':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -65,8 +65,8 @@ class DatabaseFood {
       case 'FoodCategory.appetizers':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -82,8 +82,8 @@ class DatabaseFood {
       case 'FoodCategory.mainDishes':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -99,8 +99,8 @@ class DatabaseFood {
       case 'FoodCategory.secondCourses':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -116,8 +116,8 @@ class DatabaseFood {
       case 'FoodCategory.sideDishes':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -133,8 +133,8 @@ class DatabaseFood {
       case 'FoodCategory.dessert':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -150,8 +150,8 @@ class DatabaseFood {
       case 'FoodCategory.beers':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -167,8 +167,8 @@ class DatabaseFood {
       case 'FoodCategory.nonAlcoholic':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,
@@ -184,8 +184,8 @@ class DatabaseFood {
       case 'FoodCategory.wines':
         return Food(
           allergens: snapshot.data()?['allergens'] != null
-              ? (snapshot.data()?['allergens'] as List<Allergens>)
-              .map((item) => item as Allergens)
+              ? (snapshot.data()?['allergens'] as List<String>)
+              .map((item) => item as String)
               .toList()
               : [],
           active: snapshot.data()?['active'] ?? false,

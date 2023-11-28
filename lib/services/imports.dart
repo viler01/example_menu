@@ -12,6 +12,9 @@ export 'package:flutter_web_plugins/url_strategy.dart'
 //basic
 export 'package:path_provider/path_provider.dart';
 export 'package:provider/provider.dart';
+export 'package:file_picker/file_picker.dart';
+export 'package:example_menu/GlobalVariable.dart';
+export 'package:uuid/uuid.dart';
 
 //Firebase
 export 'package:firebase_auth/firebase_auth.dart';
@@ -36,6 +39,7 @@ export 'database/database_order.dart';
 //services
 export 'app_director.dart';
 export 'auth.dart';
+export 'storage.dart';
 
 
 //screens
@@ -47,8 +51,10 @@ export '../screens/staffScreen/StaffHomepage.dart';
 export '../widgets/GeneralWidget/CustomTextField.dart';
 export '../widgets/GeneralWidget/CustomExpansionTile.dart';
 
-
-
+//addFod widgets
+export '../widgets/staffWidgets/add_food_widget/name.dart';
+export '../widgets/staffWidgets/add_food_widget/price.dart';
+export '../widgets/staffWidgets/add_food_widget/description.dart';
 
 
 

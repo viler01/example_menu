@@ -1,4 +1,3 @@
-import '../screens/login_screen.dart';
 import 'imports.dart';
 
 class AppDirector extends StatelessWidget {
@@ -17,7 +16,7 @@ class AppDirector extends StatelessWidget {
                 initialData: null,
               ),
             ],
-            child: StaffHomepage(),
+            child: const StaffHomepage(),
           );
   }
 }

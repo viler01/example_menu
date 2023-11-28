@@ -11,7 +11,7 @@ class Food{
   final String image;
   final String descriptionITA;
   final String descriptionENG;
-  final List<Allergens> allergens;
+  final List<String> allergens;
   final bool active;
 
   Food({
@@ -144,7 +144,48 @@ List<Food> provaListaMenu = [
       image: "assets/food/steak.jpg",
       descriptionITA: "Tomahawk alla griglia con senape",
       descriptionENG: "Grilled tomahawk with mustard",
-      allergens: [Allergens.milk, Allergens.mustard],
+      allergens: ['Allergens.milk', 'Allergens.mustard'],
       active: true
   ),
 ];
+
+List<Allergens> stringToAllergens( List<String>? stringList){
+
+  List<Allergens> allergenList=[];
+
+  if(stringList != null){
+    for(var item in stringList){
+      switch(item){
+        case 'Allergens.peanuts':
+          allergenList.add(Allergens.peanuts);
+        case  'Allergens.nuts' :
+          allergenList.add(Allergens.nuts);
+        case 'Allergens.gluten'  :
+          allergenList.add(Allergens.gluten);
+        case 'Allergens.crustacen':
+          allergenList.add(Allergens.crustacen);
+        case 'Allergens.eggs'  :
+          allergenList.add(Allergens.eggs);
+        case 'Allergens.fish'  :
+          allergenList.add(Allergens.fish);
+        case  'Allergens.soya' :
+          allergenList.add(Allergens.soya);
+        case 'Allergens.milk'  :
+          allergenList.add(Allergens.milk);
+        case 'Allergens.celery'  :
+          allergenList.add(Allergens.celery);
+        case 'Allergens.mustard'  :
+          allergenList.add(Allergens.mustard);
+        case 'Allergens.sesame'  :
+          allergenList.add(Allergens.sesame);
+        case  ' Allergens.sulphite' :
+          allergenList.add( Allergens.sulphite);
+        case ' Allergens.lupins':
+          allergenList.add( Allergens.lupins);
+        case  'Allergens.shellfish' :
+          allergenList.add(Allergens.shellfish);
+      }
+    }
+  }
+  return allergenList;
+}

@@ -1,3 +1,4 @@
+import 'package:example_menu/models/allergen_model.dart';
 import 'package:flutter/material.dart';
 import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/models/food_model.dart';
@@ -13,6 +14,9 @@ class FoodAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    List<Allergens> allergenList = stringToAllergens(food.allergens);
+
     return AlertDialog(
       title: Text(translateFoodName(food: food, language: currentLanguage)),
       content: SingleChildScrollView(
@@ -25,7 +29,7 @@ class FoodAlertDialog extends StatelessWidget {
             const SizedBox(height: 30,),
             Text(translateFoodDescription(food: food, language: currentLanguage)),
             const SizedBox(height: 30,),
-            AllergenColumn(allergensList: food.allergens),
+            AllergenColumn(allergensList: allergenList),
           ]
         ),
       ),
