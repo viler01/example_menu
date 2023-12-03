@@ -83,10 +83,10 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                       allFood, 'FoodCategory.wines');
 
                                   List<List<Food?>> allFoodInList=[
-                                    secondCoursesList,
-                                    appetizersList,
                                     aperitifsList,
+                                    appetizersList,
                                     maindishesList,
+                                    secondCoursesList,
                                     sideDishesList,
                                     dessertList,
                                     nonAlcoholicList,

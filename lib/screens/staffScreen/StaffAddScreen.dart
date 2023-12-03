@@ -230,8 +230,9 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                               descriptionITA.clear();
                                               descriptionENG.clear();
                                               price.clear();
-                                              for(var item in foodAllegyList){
-                                                foodAllegyList.remove(item);
+                                             foodAllegyList.clear();
+                                              for(String item in foodAllegyList){
+                                                print(item);
                                               }
                                               for(int i=0;i<boolList.length;i++){
                                                 boolList[i]=false;
@@ -401,16 +402,12 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                           descriptionITA.clear();
                                           descriptionENG.clear();
                                           price.clear();
-                                          for(var item in foodAllegyList){
-                                            foodAllegyList.remove(item);
-                                          }
+                                          foodAllegyList.clear();
                                           for(int i=0;i<boolList.length;i++){
                                             boolList[i]=false;
                                           }
                                           _fileBytes= null;
                                         });
-
-
                                        //TODO make code to change the body of homepage in order to go back to staffhomepage without fucking up the stream builder
                                       });
                                     }else{
