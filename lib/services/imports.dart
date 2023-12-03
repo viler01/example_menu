@@ -46,6 +46,7 @@ export 'storage.dart';
 export '../screens/loading_screen.dart';
 export '../screens/staffScreen/LoginScreen.dart';
 export '../screens/staffScreen/StaffHomepage.dart';
+export '../screens/staffScreen/HomePage.dart';
 
 //general widget
 export '../widgets/GeneralWidget/CustomTextField.dart';

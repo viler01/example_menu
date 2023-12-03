@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/models/allergen_model.dart';
-import 'package:example_menu/models/food_model.dart';
 
 class AllergenIcon extends StatelessWidget {
   const AllergenIcon({

@@ -1,3 +1,5 @@
+import 'package:example_menu/widgets/staffWidgets/StaffBottomBar.dart';
+
 import 'imports.dart';
 
 class AppDirector extends StatelessWidget {
@@ -16,7 +18,7 @@ class AppDirector extends StatelessWidget {
                 initialData: null,
               ),
             ],
-            child: const StaffHomepage(),
+            child:  StaffBottomBar(),
           );
   }
 }

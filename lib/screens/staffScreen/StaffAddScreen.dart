@@ -2,7 +2,6 @@ import '../../services/imports.dart';
 import 'package:example_menu/models/allergen_model.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/costumersWidgets/alleargenWidgets.dart';
-import 'package:example_menu/widgets/staffWidgets/StaffBottomBar.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffTitle.dart';
 
 class StaffAddScreen extends StatefulWidget {
@@ -14,7 +13,6 @@ class StaffAddScreen extends StatefulWidget {
 
 class _StaffAddScreenState extends State<StaffAddScreen> {
   DatabaseUser databaseUser = DatabaseUser();
-  final _formKey = GlobalKey<FormState>();
 
   bool showLoading = false;
 
@@ -77,7 +75,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const StaffBottomBar(),
+      //bottomNavigationBar: const StaffBottomBar(),
       body: CustomPaint(
         painter: MyBackground(),
         child: Container(
@@ -89,7 +87,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                       return  CustomScrollView(
                         slivers: [
                           SliverToBoxAdapter(
-                            child: StaffTitle(title: 'Aggiungi Portata',),
+                            child: StaffTitle(title: 'Add Dish',),
                           ),
                           SliverCrossAxisGroup(
                               slivers: [
@@ -131,7 +129,6 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                                   onChanged: (value){
                                                     setState(() {
                                                       dropDownValue = value!;
-                                                      print(dropDownValue);
                                                     });
                                                   },
                                                   value: dropDownValue,
@@ -202,35 +199,57 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                         ),
                                       );
                                     } else {
+
+
                                       const uuid = Uuid();
                                       String id = uuid.v1();
 
                                       Storage storage = Storage();
-                                      try{
+
                                         String? url = await storage.uploadImage(_fileBytes!, id);
 
-                                      }catch(e){
-                                        print(e);
-                                      }
+                                        if(double.tryParse(price.text) != null && nameENG.text != ''){
 
-                                      //storage.uploadImage(fileBytes!, id);
+                                          Food food = Food(
+                                              id: id,
+                                              nameITA: nameIT.text,
+                                              nameENG: nameENG.text,
+                                              price: double.parse(price.text),
+                                              descriptionENG: descriptionENG.text,
+                                              descriptionITA: descriptionITA.text,
+                                              image: url!,
+                                              category: dropDownValue,
+                                              active: true,
+                                              allergens: foodAllegyList
+                                          );
 
-                                      Food food = Food(
-                                          id: id,
-                                          nameITA: nameIT.text,
-                                          nameENG: nameENG.text,
-                                          price: double.parse(price.text),
-                                          descriptionENG: descriptionENG.text,
-                                          descriptionITA: descriptionITA.text,
-                                          image: 'aaaa',
-                                          category: dropDownValue,
-                                          active: true,
-                                          allergens: foodAllegyList
-                                      );
+                                          await databaseFood.createEdit(food: food, isEdit: false).then((value) {
+                                            setState(() {
+                                              nameIT.clear();
+                                              nameENG.clear();
+                                              descriptionITA.clear();
+                                              descriptionENG.clear();
+                                              price.clear();
+                                              for(var item in foodAllegyList){
+                                                foodAllegyList.remove(item);
+                                              }
+                                              for(int i=0;i<boolList.length;i++){
+                                                boolList[i]=false;
+                                              }
 
-                                      await databaseFood.createEdit(food: food, isEdit: false).then((value) {
-                                        Navigator.pop(context);
-                                      });
+                                              _fileBytes= null;
+                                            });
+
+                                            //TODO make code to change the body of homepage in order to go back to staffhomepage without fucking up the stream builder
+                                          });
+                                        }else{
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text('inserire un prezzo e un nome  valido'),
+                                            ),
+                                          );
+                                        }
+
                                     }
                                   }catch(e){
                                     print(e);
@@ -295,7 +314,33 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                             ),
                           ),
                           SliverToBoxAdapter(
-                            child:  Padding(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("IMMAGINE:", style: addTextStile,),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                                            border: Border.all(
+                                              color: mainColor,
+                                            )
+                                        ),
+                                        child: TextButton(
+                                          onPressed:pickImage,
+                                          child: Text('Inserisci immagine'),
+                                        ),
+                                      ),
+                                    ),
+                                  ]
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child:     Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: _fileBytes == null
                                   ? Text('no image selected')
@@ -315,7 +360,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                             child: TextButton(
                               style:
                               ButtonStyle(minimumSize: MaterialStateProperty.all(Size(100, 100))),
-                              onPressed: () async {
+                              onPressed: () async{
                                 DatabaseFood databaseFood = DatabaseFood();
                                 try{
                                   if (_fileBytes == null) {
@@ -329,31 +374,52 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                     String id = uuid.v1();
 
                                     Storage storage = Storage();
-                                    try{
-                                      String? url = await storage.uploadImage(_fileBytes!, id);
 
-                                    }catch(e){
-                                      print(e);
+                                    String? url = await storage.uploadImage(_fileBytes!, id);
+
+
+                                    if( double.tryParse(price.text)!= null  && nameENG.text != ''){
+
+                                      Food food = Food(
+                                          id: id,
+                                          nameITA: nameIT.text,
+                                          nameENG: nameENG.text,
+                                          price: double.parse(price.text),
+                                          descriptionENG: descriptionENG.text,
+                                          descriptionITA: descriptionITA.text,
+                                          image: url!,
+                                          category: dropDownValue,
+                                          active: true,
+                                          allergens: foodAllegyList
+                                      );
+
+                                      await databaseFood.createEdit(food: food, isEdit: false).then((value) {
+
+                                        setState(() {
+                                          nameIT.clear();
+                                          nameENG.clear();
+                                          descriptionITA.clear();
+                                          descriptionENG.clear();
+                                          price.clear();
+                                          for(var item in foodAllegyList){
+                                            foodAllegyList.remove(item);
+                                          }
+                                          for(int i=0;i<boolList.length;i++){
+                                            boolList[i]=false;
+                                          }
+                                          _fileBytes= null;
+                                        });
+
+
+                                       //TODO make code to change the body of homepage in order to go back to staffhomepage without fucking up the stream builder
+                                      });
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('inserire un prezzo e un nome  valido'),
+                                        ),
+                                      );
                                     }
-
-                                    //storage.uploadImage(fileBytes!, id);
-
-                                    Food food = Food(
-                                        id: id,
-                                        nameITA: nameIT.text,
-                                        nameENG: nameENG.text,
-                                        price: double.parse(price.text),
-                                        descriptionENG: descriptionENG.text,
-                                        descriptionITA: descriptionITA.text,
-                                        image: 'aaaa',
-                                        category: dropDownValue,
-                                        active: true,
-                                        allergens: foodAllegyList
-                                    );
-
-                                    await databaseFood.createEdit(food: food, isEdit: false).then((value) {
-                                      Navigator.pop(context);
-                                    });
                                   }
                                 }catch(e){
                                   print(e);
@@ -409,14 +475,6 @@ class _AllergensCheckGridState extends State<AllergensCheckGrid> {
                 crossAxisCount: division,
                 childAspectRatio: 5/1,
                 children: [
-                  /*
-                  for(var allergen in Allergen.returnAllergen(Allergens.values))
-                    AllergensCheckListTile(
-                    allergen: allergen,
-                    onChange: (value){
-
-                    },
-                  ),*/
                   for(int i=0; i< Allergen.returnAllergen(Allergens.values).length; i++)
                     AllergensCheckListTile(
                     allergen: Allergen.returnAllergen(Allergens.values)[i],

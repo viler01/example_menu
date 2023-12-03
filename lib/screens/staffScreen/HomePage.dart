@@ -1,9 +1,8 @@
 import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/models/language_model.dart';
-import 'package:example_menu/screens/login_screen.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/costumersWidgets/FoodCardMenu.dart';
-import '../services/imports.dart';
+import '../../services/imports.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,7 +17,6 @@ class _HomePageState extends State<HomePage> {
 
 
     return Scaffold(
-
 
       appBar: AppBar(
         title: Text(restourantName),
@@ -57,13 +55,7 @@ class _HomePageState extends State<HomePage> {
                               child: AppDirector());
                         }));
                   }
-                 /* {
-                    Navigator.pop(context);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                          return Loginscreen();
-                        }));
-                  },*/
+
                 )
               ],
             ),

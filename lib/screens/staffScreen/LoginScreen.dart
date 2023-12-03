@@ -173,15 +173,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               print('email : ${emailController.text}');
                               print('pass : ${password.text}');
                               print(email);
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              }
+
                               setState(() => showLoading = true);
                               await AuthService()
                                   .loginWithEmailAndPassword(
                                   email: email, password: password.text)
                                   .then((state) {
-
                                 setState(() => showLoading = false);
                                     Navigator.of(context)
                                         .pushReplacementNamed(AppDirector.id);
@@ -195,6 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
                               });
+
                             },
 
                             child: const Text('Log In'),

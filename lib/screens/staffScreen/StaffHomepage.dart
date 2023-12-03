@@ -1,4 +1,5 @@
 import 'package:example_menu/GlobalVariable.dart';
+import 'package:example_menu/screens/staffScreen/StaffEditScreen.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffActiveFoodCard.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffBottomBar.dart';
@@ -30,47 +31,6 @@ class _StaffHomepageState extends State<StaffHomepage> {
   Widget build(BuildContext context) {
 
 
-
-   /*
-    List<Food?> allFood;
-
-    Future <void> refreshFood() async{
-
-      DatabaseFood databaseFood=DatabaseFood();
-
-      setState(() {
-        allFood= databaseFood.getAllFood();
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.aperitifs'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.appetizers'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.mainDishes'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.mainDishes'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.sideDishes'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.dessert'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.nonAlcoholic'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.beers'));
-        allFoodInList.add(getRightFood(
-            allFood, 'FoodCategory.wines'));
-
-      });
-      for(List<Food?> element  in allFoodInList){
-        for(Food? f in element){
-          if(f != null){
-            print(f.id);
-          }
-        }
-      }
-
-    }
-
-*/
     return Scaffold(
       body: CustomPaint(
         painter: MyBackground(),
@@ -100,8 +60,6 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                       ConnectionState.waiting) {
                                     return const LoadingWidget();
                                   }
-
-                                 // refreshFood();
 
                                   List<Food?> allFood = snapshot.data!;
 
@@ -136,17 +94,6 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                     winesList,
                                   ];
 
-                                  print(FoodCategory.values.length);
-                                  for(Food? element in allFood){
-                                    print(element!.id);
-                                  }
-
-                                  for(List<Food?> list in allFoodInList){
-                                    print(list.length);
-                                    for(Food? element in list){
-                                      print(element!.id);
-                                    }
-                                  }
                                   return Column(
                                     children: [
                                   for (int i =0; i<FoodCategory.values.length;i++)...
@@ -175,8 +122,33 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                                 (context, int index) {
                                               return StaffActiveFoodCard(
                                                 food: allFoodInList[i][index]!,
-                                                active: (value) {},
-                                                edit: () {},
+                                                active: (value) {
+                                                  DatabaseFood databaseFood =
+                                                  DatabaseFood();
+                                                  Food food = Food(
+                                                      allergens: allFoodInList[i][index]!.allergens,
+                                                      nameENG: allFoodInList[i][index]!.nameENG,
+                                                      nameITA: allFoodInList[i][index]!.nameITA,
+                                                      category: allFoodInList[i][index]!.category,
+                                                      price: allFoodInList[i][index]!.price,
+                                                      id: allFoodInList[i][index]!.id,
+                                                      descriptionENG:allFoodInList[i][index]!.descriptionENG,
+                                                      descriptionITA: allFoodInList[i][index]!.descriptionITA,
+                                                      image: allFoodInList[i][index]!.image,
+                                                      active: !allFoodInList[i][index]!.active);
+
+                                                  databaseFood.createEdit(
+                                                      food: food, isEdit: true);
+                                                  setState(() {
+                                                    value = allFoodInList[i][index]!.active;
+                                                  });
+                                                },
+                                                edit: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                    return StaffEditScreen( food: allFoodInList[i][index]);
+                                                  }));
+
+                                                },
                                               );
                                             },
                                             itemCount: allFoodInList[i].length,
@@ -188,9 +160,6 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                   ]
                                     ]
                                   );
-
-
-
                                 }),
                           ]);
                     }),
@@ -201,7 +170,7 @@ class _StaffHomepageState extends State<StaffHomepage> {
           ),
         ),
       ),
-      bottomNavigationBar: const StaffBottomBar(),
+      //bottomNavigationBar: const StaffBottomBar(),
     );
   }
 }

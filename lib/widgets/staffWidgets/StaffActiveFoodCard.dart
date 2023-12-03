@@ -11,14 +11,14 @@ class StaffActiveFoodCard extends StatefulWidget {
   });
   final Food food;
   final Function(bool) active;
-  final Function edit;
+  final VoidCallback edit;
 
   @override
   State<StaffActiveFoodCard> createState() => _StaffActiveFoodCardState();
 }
 
 class _StaffActiveFoodCardState extends State<StaffActiveFoodCard> {
-  bool active = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +35,11 @@ class _StaffActiveFoodCardState extends State<StaffActiveFoodCard> {
             "€${widget.food.price.toString()}"
         ),
         leading: Switch(
-            value: active,
-            onChanged: (value){
-              setState(() {
-                active = value;
-              });
-              widget.active(value);
-            }),
+            value: widget.food.active,
+            onChanged: widget.active
+        ),
         trailing: IconButton(
-            onPressed: (){},
+            onPressed: widget.edit,
             icon: const Icon(Icons.mode)
         ),
 

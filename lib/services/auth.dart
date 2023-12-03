@@ -23,6 +23,8 @@ class AuthService {
       );
       User user = result.user!;
 
+      print(user.uid);
+
       return _userFromFirebase(user);
 
     } on FirebaseAuthException catch (e) {
