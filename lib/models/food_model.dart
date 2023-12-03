@@ -65,7 +65,7 @@ String translateFoodDescription({required Food food, required LanguageName langu
 
 
 //Traduzione delle food categories
-String translateFodCategory ({required FoodCategory foodCategory}){
+String translateFoodCategory ({required FoodCategory foodCategory}){
   switch(currentLanguage){
 
     case LanguageName.eng:

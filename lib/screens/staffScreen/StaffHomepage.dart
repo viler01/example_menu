@@ -99,7 +99,7 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                   for (int i =0; i<FoodCategory.values.length;i++)...
                                   [
                                     CustomExpansionTile(
-                                      title: translateFodCategory(
+                                      title: translateFoodCategory(
                                           foodCategory: FoodCategory.values[i]),
                                       children: [
                                         allFoodInList[i].isEmpty

@@ -123,7 +123,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                                   items: FoodCategory.values.map<DropdownMenuItem<FoodCategory>>((FoodCategory value) {
                                                     return DropdownMenuItem<FoodCategory>(
                                                       value: value,
-                                                      child: Text(translateFodCategory(foodCategory: value)),
+                                                      child: Text(translateFoodCategory(foodCategory: value)),
                                                     );
                                                   }).toList(),
                                                   onChanged: (value){
@@ -298,7 +298,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                       items: FoodCategory.values.map<DropdownMenuItem<FoodCategory>>((FoodCategory value) {
                                         return DropdownMenuItem<FoodCategory>(
                                           value: value,
-                                          child: Text(translateFodCategory(foodCategory: value)),
+                                          child: Text(translateFoodCategory(foodCategory: value)),
                                         );
                                       }).toList(),
                                       onChanged: (value){

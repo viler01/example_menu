@@ -188,7 +188,7 @@ class _StaffEditScreenState extends State<StaffEditScreen> {
                                           (FoodCategory value) {
                                     return DropdownMenuItem<FoodCategory>(
                                       value: value,
-                                      child: Text(translateFodCategory(
+                                      child: Text(translateFoodCategory(
                                           foodCategory: value)),
                                     );
                                   }).toList(),
@@ -404,7 +404,7 @@ class _StaffEditScreenState extends State<StaffEditScreen> {
                                 return DropdownMenuItem<FoodCategory>(
 
                                   value: value,
-                                  child: Text(translateFodCategory(
+                                  child: Text(translateFoodCategory(
                                       foodCategory: value)),
                                 );
                               }).toList(),
