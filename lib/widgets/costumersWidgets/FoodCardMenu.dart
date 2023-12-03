@@ -47,7 +47,7 @@ class FoodCardMenu extends StatelessWidget {
             //food image
             CircleAvatar(
               radius: imageRadius,
-              backgroundImage: AssetImage(food.image),
+              backgroundImage: NetworkImage(food.image),
             ),
 
             //food general information

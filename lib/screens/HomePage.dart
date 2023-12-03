@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState( ) {
 
-    myStream = DatabaseFood.allFood;
+    myStream = DatabaseFood.allFood2;
 
     super.initState();
   }
