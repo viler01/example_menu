@@ -1,5 +1,3 @@
-import 'package:example_menu/models/allergen_model.dart';
-
 import '../imports.dart';
 
 class DatabaseFood {
@@ -571,7 +569,7 @@ List<Food?> getRightFood(List<Food?> list, String category) {
 
   for (int i = 0; i < list.length; i++) {
     FoodCategory currentCategory = list[i]!.category;
-    if (currentCategory.toString() == category) {
+    if (currentCategory.toString() == category && list[i]!.active==true) {
       foodList.add(list[i]);
     }
   }

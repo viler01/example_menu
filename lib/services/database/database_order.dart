@@ -7,17 +7,19 @@ class DatabaseComanda {
   Future createEdit({required Comanda comanda, required bool isEdit }) async {
 
     return  !isEdit ?
-      await comandaCollection.doc(comanda.id).set({
-        'list': comanda.list,
-        'time' : comanda.time,
-        'id': comanda.id,
-        'tableNumber': comanda.tableNumber,
-        'createdAt': comanda.createdAt,
-        'isActive': comanda.isActive,
-        'foodNameList': comanda.foodNameList,
-        'quantityList': comanda.quantityList
-      })
-   :
+    await comandaCollection.doc(comanda.id).set({
+      'list': comanda.list,
+      'time' : comanda.time,
+      'id': comanda.id,
+      'tableNumber': comanda.tableNumber,
+      'createdAt': comanda.createdAt,
+      'isActive': comanda.isActive,
+      'foodNameList': comanda.foodNameList,
+      'quantityList': comanda.quantityList,
+      'request' : comanda.request,
+      'requestList': comanda.requestList
+    })
+        :
     await comandaCollection.doc(comanda.id).update({
       'list': comanda.list,
       'time' : comanda.time,
@@ -26,7 +28,9 @@ class DatabaseComanda {
       'createdAt': comanda.createdAt,
       'isActive': comanda.isActive,
       'foodNameList': comanda.foodNameList,
-      'quantityList': comanda.quantityList
+      'quantityList': comanda.quantityList,
+      'request' : comanda.request,
+      'requestList': comanda.requestList
     });
 
 
@@ -38,6 +42,7 @@ class DatabaseComanda {
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
 
     return Comanda(
+      request:snapshot.data()?['request'] ?? "",
       isActive: snapshot.data()?['isActive']?? false,
       id : snapshot.data()?['id'] ?? "",
       time: snapshot.data()?['time'] ?? "",
@@ -60,6 +65,11 @@ class DatabaseComanda {
           .map((item) => item as int)
           .toList()
           : [],
+      requestList: snapshot.data()?['requestList'] != null
+          ? (snapshot.data()?['requestList'] as List)
+          .map((item) => item as String)
+          .toList()
+          : [],
     );
 
 
@@ -80,6 +90,15 @@ class DatabaseComanda {
 
   static Stream<List<Comanda?>> get allComanda =>
       comandaCollection.snapshots().map(ComandaListFromSnapshot);
+
+  Future<void> deleteCollection(String collectionPath) async {
+    final collectionReference = FirebaseFirestore.instance.collection(collectionPath);
+    final querySnapshot = await collectionReference.get();
+
+    for (final documentSnapshot in querySnapshot.docs) {
+      await documentSnapshot.reference.delete();
+    }
+  }
 
 
 }

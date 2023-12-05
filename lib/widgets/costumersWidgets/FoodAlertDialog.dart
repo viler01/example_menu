@@ -24,7 +24,7 @@ class FoodAlertDialog extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 90,
-              backgroundImage: AssetImage(food.image),
+              backgroundImage: NetworkImage(food.image),
             ),
             const SizedBox(height: 30,),
             Text(translateFoodDescription(food: food, language: currentLanguage)),

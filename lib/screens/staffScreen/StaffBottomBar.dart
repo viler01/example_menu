@@ -1,6 +1,4 @@
 import 'package:example_menu/screens/staffScreen/StaffAddScreen.dart';
-import 'package:example_menu/screens/staffScreen/StaffHomepage.dart';
-import 'package:flutter/material.dart';
 import '../../services/imports.dart';
 
 class StaffBottomBar extends StatefulWidget {
@@ -15,8 +13,8 @@ class _StaffBottomBarState extends State<StaffBottomBar> {
   final List<Widget> pages = [
    StaffHomepage(),
     StaffAddScreen(),
-    Container(),
-    Container(),
+   OrdersScreen(),
+    TableNumbers()
   ];
 
   @override
@@ -42,11 +40,11 @@ class _StaffBottomBarState extends State<StaffBottomBar> {
             label: 'Add Food',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pageview),
-            label: 'Page 3',
+            icon: Icon(Icons.list_alt),
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pageview),
+            icon: Icon(Icons.table_bar),
             label: 'Page 4',
           ),
         ],

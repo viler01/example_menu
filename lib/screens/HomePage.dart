@@ -13,7 +13,43 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  int addValue = 1;
+  int subValue = 1;
+  double iconPadding = 4;
+  Map<String, int> myDictionary = {};
+
   late Stream<List<Food?>> myStream;
+
+  void addFunction({required String? key, required int? value}) {
+    bool containsFood = myDictionary.containsKey(key);
+    if (containsFood) {
+      addValue = value!;
+
+      setState(() {
+        addValue++;
+        myDictionary[key!] = addValue;
+      });
+      myDictionary.forEach((key, value) {});
+    } else {
+      setState(() {
+        myDictionary[key!] = 1;
+      });
+    }
+  }
+
+  void subFunction({required String? key, required int? value}) {
+    bool containsFood = myDictionary.containsKey(key!);
+    if (containsFood) {
+      subValue = value!;
+      setState(() {
+        subValue--;
+        myDictionary[key] = subValue;
+      });
+      myDictionary.forEach((key, value) {
+        print('key : $key, value : $value');
+      });
+    }
+  }
 
   @override
   void initState( ) {
@@ -32,6 +68,28 @@ class _HomePageState extends State<HomePage> {
 
       appBar: AppBar(
         title: Text(restourantName),
+        actions: [
+          IconButton(
+              onPressed: () {
+                ///in questo modo ottengo il refresh della pagina e si azzerano i numeri delle portate
+                showModalBottomSheet(
+                  backgroundColor: Colors.white,
+                  context: context,
+                  isScrollControlled: true,
+                  isDismissible: true,
+                  builder: (context) => ClientPopupScreen(
+                    map: myDictionary,
+                  ),
+                ).then((value) {
+                  myDictionary.clear();
+                  setState(() {});
+                });
+              },
+              icon: Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.green,
+              ))
+        ],
       ),
 
 
@@ -153,7 +211,20 @@ class _HomePageState extends State<HomePage> {
                                   Axis.vertical,
                                   itemBuilder:
                                       (context, int index) {
-                                    return FoodCardMenu(food: allFoodInList[i][index]!);
+                                    return FoodCardMenu(
+                                        quantity: myDictionary[
+                                        allFoodInList[i][index]!.nameENG],
+                                     subFun: ()=> subFunction(
+                                         key:  allFoodInList[i][index]!.nameENG,
+                                         value: myDictionary[
+                                         allFoodInList[i][index]!.nameENG]),
+                                        addFun:(){
+                                          addFunction(
+                                              key: allFoodInList[i][index]!.nameENG,
+                                              value: myDictionary[
+                                              allFoodInList[i][index]!.nameENG]);
+                                        } ,
+                                        food: allFoodInList[i][index]!);
                                   },
                                   itemCount: allFoodInList[i].length,
                                 ),
@@ -171,15 +242,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-/*
-*  Column(
-              children: [
-                for(var foodCategory in FoodCategory.values)CustomExpansionTile(
-                    title: translateFodCategory(foodCategory: foodCategory),
-                  children: [
-                    for(var food in provaListaMenu)if(food.category == foodCategory)FoodCardMenu(food: food,)
-                  ],
-                ),
-              ],
-            ),
-* */
+List<Food?> getActiveFood(List<Food?> list, String course) {
+  List<Food?> foodList = [];
+
+  for (int i = 0; i < list.length; i++) {
+    FoodCategory currentCourse = list[i]!.category;
+    if (currentCourse.toString() == course && list[i]!.active) {
+      foodList.add(list[i]);
+    }
+  }
+  return foodList;
+}

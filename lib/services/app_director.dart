@@ -1,4 +1,4 @@
-import 'package:example_menu/widgets/staffWidgets/StaffBottomBar.dart';
+import 'package:example_menu/screens/staffScreen/StaffBottomBar.dart';
 
 import 'imports.dart';
 

@@ -1,5 +1,4 @@
-import 'package:example_menu/GlobalVariable.dart';
-import 'package:flutter/material.dart';
+import 'package:example_menu/screens/staffScreen/StaffBottomBar.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import '../../services/imports.dart';
 
@@ -100,8 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   email: email, password: password.text)
                                   .then((state) {
                                 setState(() => showLoading = false);
-                                Navigator.of(context)
-                                    .pushReplacementNamed(AppDirector.id);
+                               // Navigator.of(context).pushNamed(AppDirector.id);
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return StaffBottomBar();
+                                }));
 
                                 if (state == null) {
                                   ScaffoldMessenger.of(context)
@@ -170,9 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              print('email : ${emailController.text}');
-                              print('pass : ${password.text}');
-                              print(email);
 
                               setState(() => showLoading = true);
                               await AuthService()

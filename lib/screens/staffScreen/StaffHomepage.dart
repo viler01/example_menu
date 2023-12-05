@@ -2,7 +2,6 @@ import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/screens/staffScreen/StaffEditScreen.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffActiveFoodCard.dart';
-import 'package:example_menu/widgets/staffWidgets/StaffBottomBar.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffTitle.dart';
 import '../../services/imports.dart';
 

@@ -7,6 +7,8 @@ class Comanda{
  final bool isActive;
  final List<String?> foodNameList;
 final List<int> quantityList;
+final String request;
+ List<String>? requestList;
   Comanda({
     required this.id,
     required this.time,
@@ -15,6 +17,8 @@ final List<int> quantityList;
     required this.createdAt,
     required this.isActive,
     required this.foodNameList,
-    required this.quantityList
+    required this.quantityList,
+    required this.request,
+    this.requestList
   });
 }

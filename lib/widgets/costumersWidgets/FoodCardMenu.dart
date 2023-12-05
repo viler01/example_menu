@@ -7,10 +7,15 @@ import 'package:example_menu/widgets/costumersWidgets/alleargenWidgets.dart';
 
 class FoodCardMenu extends StatelessWidget {
   FoodCardMenu({
-    super.key,
+    required this.addFun,
+    required this.subFun,
     required this.food,
+    required this.quantity
   });
+  final int? quantity;
   final Food food;
+  final VoidCallback addFun;
+  final VoidCallback subFun;
 
   double cardHeight = 150;
   double imageRadius = 60;
@@ -70,12 +75,42 @@ class FoodCardMenu extends StatelessWidget {
             ),
 
             //action
-            IconButton(
-                icon: const Icon(Icons.remove_red_eye_outlined),
-                onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => FoodAlertDialog(food: food,)
+            Column(
+              children: [
+                IconButton(
+                    icon: const Icon(Icons.remove_red_eye_outlined),
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => FoodAlertDialog(food: food,)
+                    ),
                 ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.add_circle),
+                      onPressed:addFun,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(quantity == null? '0' : quantity.toString()),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outlined),
+                      onPressed:(){
+                        if(quantity!>0 && quantity != null){
+
+                          subFun();
+                        }
+                      },
+                    ),
+                  ],
+                )
+              ],
             ),
 
           ],
