@@ -155,23 +155,23 @@ class _HomePageState extends State<HomePage> {
                   List<Food?> allFood = snapshot.data!;
 
                   List<Food?> aperitifsList = getRightFood(
-                      allFood, 'FoodCategory.aperitifs');
+                      allFood, 'FoodCategory.aperitifs',false);
                   List<Food?> appetizersList = getRightFood(
-                      allFood, 'FoodCategory.appetizers');
+                      allFood, 'FoodCategory.appetizers',false);
                   List<Food?> maindishesList = getRightFood(
-                      allFood, 'FoodCategory.mainDishes');
+                      allFood, 'FoodCategory.mainDishes',false);
                   List<Food?> secondCoursesList = getRightFood(
-                      allFood, 'FoodCategory.secondCourses');
+                      allFood, 'FoodCategory.secondCourses',false);
                   List<Food?> sideDishesList = getRightFood(
-                      allFood, 'FoodCategory.sideDishes');
+                      allFood, 'FoodCategory.sideDishes',false);
                   List<Food?> dessertList = getRightFood(
-                      allFood, 'FoodCategory.dessert');
+                      allFood, 'FoodCategory.dessert',false);
                   List<Food?> nonAlcoholicList = getRightFood(
-                      allFood, 'FoodCategory.nonAlcoholic');
+                      allFood, 'FoodCategory.nonAlcoholic',false);
                   List<Food?> beersList = getRightFood(
-                      allFood, 'FoodCategory.beers');
+                      allFood, 'FoodCategory.beers',false);
                   List<Food?> winesList = getRightFood(
-                      allFood, 'FoodCategory.wines');
+                      allFood, 'FoodCategory.wines',false);
 
                   List<List<Food?>> allFoodInList=[
                     aperitifsList,

@@ -63,23 +63,23 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                   List<Food?> allFood = snapshot.data!;
 
                                   List<Food?> aperitifsList = getRightFood(
-                                      allFood, 'FoodCategory.aperitifs');
+                                      allFood, 'FoodCategory.aperitifs',true);
                                   List<Food?> appetizersList = getRightFood(
-                                      allFood, 'FoodCategory.appetizers');
+                                      allFood, 'FoodCategory.appetizers',true);
                                   List<Food?> maindishesList = getRightFood(
-                                      allFood, 'FoodCategory.mainDishes');
+                                      allFood, 'FoodCategory.mainDishes',true);
                                   List<Food?> secondCoursesList = getRightFood(
-                                      allFood, 'FoodCategory.secondCourses');
+                                      allFood, 'FoodCategory.secondCourses',true);
                                   List<Food?> sideDishesList = getRightFood(
-                                      allFood, 'FoodCategory.sideDishes');
+                                      allFood, 'FoodCategory.sideDishes',true);
                                   List<Food?> dessertList = getRightFood(
-                                      allFood, 'FoodCategory.dessert');
+                                      allFood, 'FoodCategory.dessert',true);
                                   List<Food?> nonAlcoholicList = getRightFood(
-                                      allFood, 'FoodCategory.nonAlcoholic');
+                                      allFood, 'FoodCategory.nonAlcoholic',true);
                                   List<Food?> beersList = getRightFood(
-                                      allFood, 'FoodCategory.beers');
+                                      allFood, 'FoodCategory.beers',true);
                                   List<Food?> winesList = getRightFood(
-                                      allFood, 'FoodCategory.wines');
+                                      allFood, 'FoodCategory.wines',true);
 
                                   List<List<Food?>> allFoodInList=[
                                     aperitifsList,

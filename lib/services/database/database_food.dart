@@ -564,15 +564,26 @@ class DatabaseFood {
 
 }
 
-List<Food?> getRightFood(List<Food?> list, String category) {
+List<Food?> getRightFood(List<Food?> list, String category, bool isStaff) {
   List<Food?> foodList = [];
 
-  for (int i = 0; i < list.length; i++) {
-    FoodCategory currentCategory = list[i]!.category;
-    if (currentCategory.toString() == category && list[i]!.active==true) {
-      foodList.add(list[i]);
+  if(isStaff){
+    for (int i = 0; i < list.length; i++) {
+      FoodCategory currentCategory = list[i]!.category;
+      if (currentCategory.toString() == category ) {
+        foodList.add(list[i]);
+      }
+    }
+  }else{
+    for (int i = 0; i < list.length; i++) {
+      FoodCategory currentCategory = list[i]!.category;
+      if (currentCategory.toString() == category && list[i]!.active==true) {
+        foodList.add(list[i]);
+      }
     }
   }
+
+
   return foodList;
 }
 
