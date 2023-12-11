@@ -523,6 +523,9 @@ class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
     return Container(
       margin: EdgeInsets.all(2),
       decoration: BoxDecoration(
+        color: addingAllergen
+                ?secondaryColor
+                :null,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           border: Border.all(
               width: 1,
@@ -532,16 +535,6 @@ class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
       child: ListTile(
         title: Text(translateAllergen(widget.allergen)),
         trailing: AllergenIcon(assetName: widget.allergen.svgDirectory,),
-        leading: Checkbox(
-            value: addingAllergen,
-            onChanged: (value){
-              setState(() {
-                addingAllergen = value!;
-
-              });
-              widget.onChange(value!);
-            }
-        ),
         onTap: (){
           setState(() {
             addingAllergen = !addingAllergen;

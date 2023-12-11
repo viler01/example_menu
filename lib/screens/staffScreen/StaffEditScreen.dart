@@ -600,21 +600,14 @@ class AllergensCheckListTile extends StatefulWidget {
 class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
 
 
-  late bool checkBoxSelection ;
-
-  @override
-  void initState() {
-
-    checkBoxSelection = widget.isSelected;
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(2),
       decoration: BoxDecoration(
+          color: widget.isSelected
+              ?secondaryColor
+              :null,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           border: Border.all(width: 1, color: Colors.black)),
       child: ListTile(
@@ -622,16 +615,6 @@ class _AllergensCheckListTileState extends State<AllergensCheckListTile> {
         trailing: AllergenIcon(
           assetName: widget.allergen.svgDirectory,
         ),
-        leading: Checkbox(
-            value: widget.isSelected,
-            onChanged: (value) {
-              setState(() {
-
-                //TODO: se viene cliccata la box il codice non funziona (viene attivato l'onChanged non la funzione onTap. bisogna sistemarlo
-                checkBoxSelection = value!;
-              });
-
-            }),
         onTap: widget.callback,
       ),
     );

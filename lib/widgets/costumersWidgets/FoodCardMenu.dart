@@ -87,8 +87,13 @@ class FoodCardMenu extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.add_circle),
-                      onPressed:addFun,
+                      icon: const Icon(Icons.remove_circle_outlined),
+                      onPressed:(){
+                        if(quantity!>0 && quantity != null){
+
+                          subFun();
+                        }
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -100,13 +105,8 @@ class FoodCardMenu extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.remove_circle_outlined),
-                      onPressed:(){
-                        if(quantity!>0 && quantity != null){
-
-                          subFun();
-                        }
-                      },
+                      icon: const Icon(Icons.add_circle),
+                      onPressed:addFun,
                     ),
                   ],
                 )

@@ -43,124 +43,125 @@ class _StaffHomepageState extends State<StaffHomepage> {
                   Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: LayoutBuilder(builder: (context, constraints) {
-                      return StaffLayoutBuilder(
-                          maxWidth: constraints.maxWidth,
-                          children: [
-                            StreamBuilder<List<Food?>>(
-                                stream: myStream,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<List<Food?>> snapshot) {
-                                  if (snapshot.hasError) {
-                                    print(snapshot.error);
-                                    return const Text('Something went wrong');
-                                  }
+                      return Container(
+                        width: constraints.maxWidth > horizontalLayout
+                                ? horizontalLayout - 60 //60 è il padding dei due lati
+                                : null,
+                        child: StreamBuilder<List<Food?>>(
+                            stream: myStream,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<Food?>> snapshot) {
+                              if (snapshot.hasError) {
+                                print(snapshot.error);
+                                return const Text('Something went wrong');
+                              }
 
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const LoadingWidget();
-                                  }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const LoadingWidget();
+                              }
 
-                                  List<Food?> allFood = snapshot.data!;
+                              List<Food?> allFood = snapshot.data!;
 
-                                  List<Food?> aperitifsList = getRightFood(
-                                      allFood, 'FoodCategory.aperitifs',true);
-                                  List<Food?> appetizersList = getRightFood(
-                                      allFood, 'FoodCategory.appetizers',true);
-                                  List<Food?> maindishesList = getRightFood(
-                                      allFood, 'FoodCategory.mainDishes',true);
-                                  List<Food?> secondCoursesList = getRightFood(
-                                      allFood, 'FoodCategory.secondCourses',true);
-                                  List<Food?> sideDishesList = getRightFood(
-                                      allFood, 'FoodCategory.sideDishes',true);
-                                  List<Food?> dessertList = getRightFood(
-                                      allFood, 'FoodCategory.dessert',true);
-                                  List<Food?> nonAlcoholicList = getRightFood(
-                                      allFood, 'FoodCategory.nonAlcoholic',true);
-                                  List<Food?> beersList = getRightFood(
-                                      allFood, 'FoodCategory.beers',true);
-                                  List<Food?> winesList = getRightFood(
-                                      allFood, 'FoodCategory.wines',true);
+                              List<Food?> aperitifsList = getRightFood(
+                                  allFood, 'FoodCategory.aperitifs',true);
+                              List<Food?> appetizersList = getRightFood(
+                                  allFood, 'FoodCategory.appetizers',true);
+                              List<Food?> maindishesList = getRightFood(
+                                  allFood, 'FoodCategory.mainDishes',true);
+                              List<Food?> secondCoursesList = getRightFood(
+                                  allFood, 'FoodCategory.secondCourses',true);
+                              List<Food?> sideDishesList = getRightFood(
+                                  allFood, 'FoodCategory.sideDishes',true);
+                              List<Food?> dessertList = getRightFood(
+                                  allFood, 'FoodCategory.dessert',true);
+                              List<Food?> nonAlcoholicList = getRightFood(
+                                  allFood, 'FoodCategory.nonAlcoholic',true);
+                              List<Food?> beersList = getRightFood(
+                                  allFood, 'FoodCategory.beers',true);
+                              List<Food?> winesList = getRightFood(
+                                  allFood, 'FoodCategory.wines',true);
 
-                                  List<List<Food?>> allFoodInList=[
-                                    aperitifsList,
-                                    appetizersList,
-                                    maindishesList,
-                                    secondCoursesList,
-                                    sideDishesList,
-                                    dessertList,
-                                    nonAlcoholicList,
-                                    beersList,
-                                    winesList,
-                                  ];
+                              List<List<Food?>> allFoodInList=[
+                                aperitifsList,
+                                appetizersList,
+                                maindishesList,
+                                secondCoursesList,
+                                sideDishesList,
+                                dessertList,
+                                nonAlcoholicList,
+                                beersList,
+                                winesList,
+                              ];
 
-                                  return Column(
-                                    children: [
-                                  for (int i =0; i<FoodCategory.values.length;i++)...
-                                  [
-                                    CustomExpansionTile(
-                                      title: translateFoodCategory(
-                                          foodCategory: FoodCategory.values[i]),
-                                      children: [
-                                        allFoodInList[i].isEmpty
-                                            ? Center(
-                                            child: Center(
-                                              child: Text(
-                                                'not already inserted ',
-                                              ),
-                                            ))
-                                            : Padding(
-                                          padding:
-                                          const EdgeInsets.all(8.0),
-                                          child: ListView.builder(
-                                            physics:
-                                            const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection:
-                                            Axis.vertical,
-                                            itemBuilder:
-                                                (context, int index) {
-                                              return StaffActiveFoodCard(
-                                                food: allFoodInList[i][index]!,
-                                                active: (value) {
-                                                  DatabaseFood databaseFood =
-                                                  DatabaseFood();
-                                                  Food food = Food(
-                                                      allergens: allFoodInList[i][index]!.allergens,
-                                                      nameENG: allFoodInList[i][index]!.nameENG,
-                                                      nameITA: allFoodInList[i][index]!.nameITA,
-                                                      category: allFoodInList[i][index]!.category,
-                                                      price: allFoodInList[i][index]!.price,
-                                                      id: allFoodInList[i][index]!.id,
-                                                      descriptionENG:allFoodInList[i][index]!.descriptionENG,
-                                                      descriptionITA: allFoodInList[i][index]!.descriptionITA,
-                                                      image: allFoodInList[i][index]!.image,
-                                                      active: !allFoodInList[i][index]!.active);
-
-                                                  databaseFood.createEdit(
-                                                      food: food, isEdit: true);
-                                                  setState(() {
-                                                    value = allFoodInList[i][index]!.active;
-                                                  });
-                                                },
-                                                edit: () {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                    return StaffEditScreen( food: allFoodInList[i][index]);
-                                                  }));
-
-                                                },
-                                              );
-                                            },
-                                            itemCount: allFoodInList[i].length,
+                              return Column(
+                                children: [
+                              for (int i =0; i<FoodCategory.values.length;i++)...
+                              [
+                                CustomExpansionTile(
+                                  title: translateFoodCategory(
+                                      foodCategory: FoodCategory.values[i]),
+                                  children: [
+                                    allFoodInList[i].isEmpty
+                                        ? Center(
+                                        child: Center(
+                                          child: Text(
+                                            'not already inserted ',
                                           ),
-                                        )
-                                      ],
-                                    )
+                                        ))
+                                        : Padding(
+                                      padding:
+                                      const EdgeInsets.all(8.0),
+                                      child: ListView.builder(
+                                        physics:
+                                        const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        scrollDirection:
+                                        Axis.vertical,
+                                        itemBuilder:
+                                            (context, int index) {
+                                          return StaffActiveFoodCard(
+                                            food: allFoodInList[i][index]!,
+                                            active: (value) {
+                                              DatabaseFood databaseFood =
+                                              DatabaseFood();
+                                              Food food = Food(
+                                                  allergens: allFoodInList[i][index]!.allergens,
+                                                  nameENG: allFoodInList[i][index]!.nameENG,
+                                                  nameITA: allFoodInList[i][index]!.nameITA,
+                                                  category: allFoodInList[i][index]!.category,
+                                                  price: allFoodInList[i][index]!.price,
+                                                  id: allFoodInList[i][index]!.id,
+                                                  descriptionENG:allFoodInList[i][index]!.descriptionENG,
+                                                  descriptionITA: allFoodInList[i][index]!.descriptionITA,
+                                                  image: allFoodInList[i][index]!.image,
+                                                  active: !allFoodInList[i][index]!.active);
 
-                                  ]
-                                    ]
-                                  );
-                                }),
-                          ]);
+                                              databaseFood.createEdit(
+                                                  food: food, isEdit: true);
+                                              setState(() {
+                                                value = allFoodInList[i][index]!.active;
+                                              });
+                                            },
+                                            edit: () {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return StaffEditScreen( food: allFoodInList[i][index]);
+                                              }));
+
+                                            },
+                                          );
+                                        },
+                                        itemCount: allFoodInList[i].length,
+                                      ),
+                                    )
+                                  ],
+                                )
+
+                              ]
+                                ]
+                              );
+                            }),
+                      );
                     }),
                   ),
                 ],
