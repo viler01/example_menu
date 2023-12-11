@@ -10,7 +10,8 @@ const String restourantLogo = "assets/restaurant/restourantLogo.png";
 //COLORI
 //Colori principali
 Color mainColor = Colors.teal;
-Color secondaryColor = Colors.teal.shade200;
+Color secondaryColor = Colors.teal.shade100;
+Color selectedColor = Colors.teal.shade300;
 //Colori background
 Color backgroundColor = Colors.white;
 Color bigCircleBG = Colors.teal.shade50;

@@ -18,7 +18,10 @@ class _TableItemUserState extends State<TableItemUser> {
   Widget build(BuildContext context) {
     return  Card(
       child: Container(
-        color: widget.tavolo!.isTaken? Color.fromRGBO(255, 0, 0, 0.2):  Colors.cyanAccent,
+        decoration: BoxDecoration(
+          color: widget.tavolo!.isTaken? selectedColor :secondaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(20))
+        ),
         height: 80,
         width: 350,
         child: Row(
@@ -29,7 +32,7 @@ class _TableItemUserState extends State<TableItemUser> {
               child: Switch(
                 value: widget.tavolo!.isTaken,
                 onChanged: widget.isActive,
-                activeColor: kPrimaryColor,
+                activeColor: mainColor,
               ),
             ),
             Text(
