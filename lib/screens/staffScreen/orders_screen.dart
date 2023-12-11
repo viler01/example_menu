@@ -1,3 +1,5 @@
+import 'package:example_menu/widgets/staffWidgets/StaffTitle.dart';
+
 import '../../services/imports.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -160,301 +162,364 @@ class _OrdersScreenState extends State<OrdersScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: paddingVertical,
-                horizontal: paddingHorizontal),
-            child: Text(
-              'Le tue Comande',
-            ),
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                    Container(
-                      height: height,
-                      width: width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black54, width: 2)),
-                      child: StreamBuilder(
-                          stream:myStream,
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasError) {
-                              print(snapshot.error);
-                              return const Text('Something went wrong');
-                            }
+          StaffTitle(title: "Le tue comande",),
+          SmallComanda(height: height, width: width, myStream: myStream, snapshotOrderList: snapshotOrderList, normalComandaController: _normalComandaController),
+          InsertTableNumber(vertical_padding: vertical_padding, horizontal_padding: horizontal_padding, tableNumber: tableNumber),
+          BottoneCompatta(tableNumber: tableNumber, compattaComanda: compattaComanda,),
+          BigComanda(height: height, width: width, superComandaStream: superComandaStream),
+        ],
+      ),
+    );
+  }
+}
 
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const LoadingWidget();
-                            }
-                            //List<Comanda?> allComanda = snapshot.data!;
-                            final allComandaSnapshot = snapshot.data!.docs;
+class BottoneCompatta extends StatelessWidget {
+  const BottoneCompatta({
+    super.key,
+    required this.tableNumber,
+    required this.compattaComanda
+  });
 
-                            List<Comanda?> allComanda = [];
+  final TextEditingController tableNumber;
+  final Function(double? number) compattaComanda;
 
-                            for (int i = 0; i < allComandaSnapshot.length; i++) {
-
-                              List<String?> cibi = [];
-                              for (int j = 0; j < allComandaSnapshot[i].data()['list'].length; j++) {
-                                cibi.add(
-                                    allComandaSnapshot[i].data()['list'][j]);
-                              }
-                              List<String?> foodNames = [];
-                              for (int j = 0; j < allComandaSnapshot[i].data()['foodNameList'].length; j++) {
-                                foodNames.add(
-                                    allComandaSnapshot[i].data()['foodNameList'][j]);
-                              }
-                              List<int> foodQuantity = [];
-                              for (int j = 0; j < allComandaSnapshot[i].data()['quantityList'].length; j++) {
-                                foodQuantity.add(
-                                    allComandaSnapshot[i].data()['quantityList'][j]);
-                              }
-
-
-                              DateTime dateTime = allComandaSnapshot[i]
-                                  .data()['createdAt']
-                                  .toDate();
-                              String request = allComandaSnapshot[i].data()['request'];
-
-                              //TODO occhio qua
-                                /*
-                              List<bool> boolList= [];
-                              for(int y=0;y<allComandaSnapshot.length;y++){
-                                boolList.add(allComandaSnapshot[y].data()['isActive']);
-                                myList.add(allComandaSnapshot[y].data()['isActive']);
-                              }
-                              //sing(boolList: boolList);
-                              */
-
-
-
-
-                              Comanda comanda = Comanda(
-                                request: request,
-                                foodNameList: foodNames,
-                                quantityList:  foodQuantity,
-                                isActive:
-                                    allComandaSnapshot[i].data()['isActive'],
-                                id: allComandaSnapshot[i].data()['id'],
-                                createdAt: dateTime,
-                                list: cibi,
-                                time: allComandaSnapshot[i].data()['time'],
-                                tableNumber:
-                                    allComandaSnapshot[i].data()['tableNumber'],
-                              );
-
-                              allComanda.add(comanda);
-
-                            }
-                            snapshotOrderList.clear();
-
-                            for(int i=0; i<allComanda.length;i++){
-                              snapshotOrderList.add(allComanda[i]);
-                            }
-
-
-
-                                return allComanda.isEmpty
-                                ? Center(
-                                    child: Center(
-                                    child: Text(
-                                      'Nessuna comanda ricevuta ',
-                                    ),
-                                  ))
-                                : Container(
-                                    height: height,
-                                    width: width,
-                                    child: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: ListView.builder(
-                                          controller: _normalComandaController,
-                                         // physics: const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          itemBuilder: (context, int index) {
-                                            return ComandaItemUser(
-                                                comanda: allComanda[index]);
-                                          },
-                                          itemCount: allComanda.length,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                          }),
-                    ),
-                    /*
-                    IconButton(onPressed: (){
-                      print('ok');
-                     // _normalComandaController.jumpTo(0.0);
-                       //scrollToFirstTile();
-                    }, icon: Icon(CupertinoIcons.arrow_up))*/
-              ),
-          DeleteAllButton(collectionName: 'comanda')
-            ],
-          ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: vertical_padding,
-                      horizontal: horizontal_padding),
-                  child:
-                  Container(
-                    height: 80,
-                    width: 400,
-                    child:  TextFormField(
-                      controller: tableNumber,
-                      keyboardType: TextInputType.numberWithOptions(
-                          decimal: true
-                      ),
-
-                      textAlign: TextAlign.center,
-                      decoration: AppStyle().kTextFieldDecoration(
-                          icon: Icons.location_on,
-                          hintText:
-                          'inserire il numero del tavolo da compattare'),
-                    ),
-                  ),),
-
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton(
-                    child: Text('compatta'),
-                    onPressed: () {
-                      String tableNumberFormatted = tableNumber.text.replaceAll(',', '.');
-                      compattaComanda(double.tryParse(tableNumberFormatted));
-                      /*
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CupertinoButton(
+        child: Text('compatta'),
+        onPressed: () {
+          String tableNumberFormatted = tableNumber.text.replaceAll(',', '.');
+          compattaComanda(double.tryParse(tableNumberFormatted));
+          /*
               AudioPlayer player = AudioPlayer();
               player.play(UrlSource('https://firebasestorage.googleapis.com/v0/b/piacericarnali-d521e.appspot.com/o/test%2Fsound.mp3?alt=media&token=af6f5ca2-28af-4f7f-b82d-e24bd429f1f8'));
               */
-                    },
-                  ),
-                ),
+        },
+      ),
+    );
+  }
+}
+
+class InsertTableNumber extends StatelessWidget {
+  const InsertTableNumber({
+    super.key,
+    required this.vertical_padding,
+    required this.horizontal_padding,
+    required this.tableNumber,
+  });
+
+  final double vertical_padding;
+  final double horizontal_padding;
+  final TextEditingController tableNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          vertical: vertical_padding,
+          horizontal: horizontal_padding),
+      child:
+      Container(
+        height: 80,
+        width: 400,
+        child:  TextFormField(
+          controller: tableNumber,
+          keyboardType: TextInputType.numberWithOptions(
+              decimal: true
+          ),
+
+          textAlign: TextAlign.center,
+          decoration: AppStyle().kTextFieldDecoration(
+              icon: Icons.location_on,
+              hintText:
+              'inserire il numero del tavolo da compattare'),
+        ),
+      ),);
+  }
+}
+
+class BigComanda extends StatelessWidget {
+  const BigComanda({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.superComandaStream,
+  });
+
+  final double height;
+  final double width;
+  final Stream superComandaStream;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black54, width: 2)),
+            child: StreamBuilder(
+                stream:superComandaStream,
+                builder:
+                    (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Text('Something went wrong');
+                  }
+
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const LoadingWidget();
+                  }
+                  //List<Comanda?> allComanda = snapshot.data!;
+                 final allSuperComandaSnapshot = snapshot.data!.docs;
+
+                  List<Comanda?> allSuperComanda = [];
 
 
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Container(
-                        height: height,
-                        width: width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.black54, width: 2)),
-                        child: StreamBuilder(
-                            stream:superComandaStream,
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasError) {
-                                print(snapshot.error);
-                                return const Text('Something went wrong');
-                              }
+                    for (int i = 0; i < allSuperComandaSnapshot.length; i++) {
 
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const LoadingWidget();
-                              }
-                              //List<Comanda?> allComanda = snapshot.data!;
-                             final allSuperComandaSnapshot = snapshot.data!.docs;
+                      List<String?> cibi = [];
+                      for (int j = 0; j < allSuperComandaSnapshot[i].data()['list'].length; j++) {
+                        cibi.add(
+                            allSuperComandaSnapshot[i].data()['list'][j]);
+                      }
+                      List<String?> foodNames = [];
+                      for (int j = 0; j < allSuperComandaSnapshot[i].data()['foodNameList'].length; j++) {
+                        foodNames.add(
+                            allSuperComandaSnapshot[i].data()['foodNameList'][j]);
+                      }
+                      List<int> foodQuantity = [];
+                      for (int j = 0; j < allSuperComandaSnapshot[i].data()['quantityList'].length; j++) {
+                        foodQuantity.add(
+                            allSuperComandaSnapshot[i].data()['quantityList'][j]);
+                      }
 
-                              List<Comanda?> allSuperComanda = [];
+                      List<String> requestList=[];
+                      for (int j = 0; j < allSuperComandaSnapshot[i].data()['requestList'].length; j++) {
+                        requestList.add(
+                            allSuperComandaSnapshot[i].data()['requestList'][j]);
+                      }
 
 
-                                for (int i = 0; i < allSuperComandaSnapshot.length; i++) {
-
-                                  List<String?> cibi = [];
-                                  for (int j = 0; j < allSuperComandaSnapshot[i].data()['list'].length; j++) {
-                                    cibi.add(
-                                        allSuperComandaSnapshot[i].data()['list'][j]);
-                                  }
-                                  List<String?> foodNames = [];
-                                  for (int j = 0; j < allSuperComandaSnapshot[i].data()['foodNameList'].length; j++) {
-                                    foodNames.add(
-                                        allSuperComandaSnapshot[i].data()['foodNameList'][j]);
-                                  }
-                                  List<int> foodQuantity = [];
-                                  for (int j = 0; j < allSuperComandaSnapshot[i].data()['quantityList'].length; j++) {
-                                    foodQuantity.add(
-                                        allSuperComandaSnapshot[i].data()['quantityList'][j]);
-                                  }
-
-                                  List<String> requestList=[];
-                                  for (int j = 0; j < allSuperComandaSnapshot[i].data()['requestList'].length; j++) {
-                                    requestList.add(
-                                        allSuperComandaSnapshot[i].data()['requestList'][j]);
-                                  }
+                      DateTime dateTime = allSuperComandaSnapshot[i]
+                          .data()['createdAt']
+                          .toDate();
+                      String request = allSuperComandaSnapshot[i].data()['request'];
 
 
-                                  DateTime dateTime = allSuperComandaSnapshot[i]
-                                      .data()['createdAt']
-                                      .toDate();
-                                  String request = allSuperComandaSnapshot[i].data()['request'];
+                      Comanda comanda = Comanda(
+                        requestList: requestList,
+                        request: request,
+                        foodNameList: foodNames,
+                        quantityList:  foodQuantity,
+                        isActive:
+                        allSuperComandaSnapshot[i].data()['isActive'],
+                        id: allSuperComandaSnapshot[i].data()['id'],
+                        createdAt: dateTime,
+                        list: cibi,
+                        time: allSuperComandaSnapshot[i].data()['time'],
+                        tableNumber:
+                        allSuperComandaSnapshot[i].data()['tableNumber'],
+                      );
+                      allSuperComanda.add(comanda);
 
+                    }
 
-                                  Comanda comanda = Comanda(
-                                    requestList: requestList,
-                                    request: request,
-                                    foodNameList: foodNames,
-                                    quantityList:  foodQuantity,
-                                    isActive:
-                                    allSuperComandaSnapshot[i].data()['isActive'],
-                                    id: allSuperComandaSnapshot[i].data()['id'],
-                                    createdAt: dateTime,
-                                    list: cibi,
-                                    time: allSuperComandaSnapshot[i].data()['time'],
-                                    tableNumber:
-                                    allSuperComandaSnapshot[i].data()['tableNumber'],
-                                  );
-                                  allSuperComanda.add(comanda);
-
-                                }
-
-                              return allSuperComanda.isEmpty
-                                  ? Center(
-                                  child: Center(
-                                    child: Text(
-                                      'Nessuna comanda ricevuta ',
-                                      style: TextStyle(color: kPrimaryColor),
-                                    ),
-                                  ))
-                                  : Container(
-                                height: height,
-                                width: width,
-                                child: SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ListView.builder(
-                                      physics:
-                                      const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemBuilder: (context, int index) {
-                                        return SuperComandaItemUser(
-                                            comanda: allSuperComanda[index]);
-                                      },
-                                      itemCount: allSuperComanda.length,
-                                    ),
-                                  ),
-                                ),
-                              );
-
-
-                            }),
+                  return allSuperComanda.isEmpty
+                      ? Center(
+                      child: Center(
+                        child: Text(
+                          'Nessuna comanda ricevuta ',
+                          style: TextStyle(color: kPrimaryColor),
+                        ),
+                      ))
+                      : Container(
+                    height: height,
+                    width: width,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ListView.builder(
+                          physics:
+                          const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, int index) {
+                            return SuperComandaItemUser(
+                                comanda: allSuperComanda[index]);
+                          },
+                          itemCount: allSuperComanda.length,
+                        ),
                       ),
                     ),
+                  );
 
-                 DeleteAllButton(collectionName: 'superComanda')
 
-                  ],
-                ),
+                }),
+          ),
+        ),
 
-        ],
-      ),
+     DeleteAllButton(collectionName: 'superComanda')
+
+      ],
+    );
+  }
+}
+
+class SmallComanda extends StatelessWidget {
+  const SmallComanda({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.myStream,
+    required this.snapshotOrderList,
+    required ScrollController normalComandaController,
+  }) : _normalComandaController = normalComandaController;
+
+  final double height;
+  final double width;
+  final Stream myStream;
+  final List<Comanda?> snapshotOrderList;
+  final ScrollController _normalComandaController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(10),
+          child:
+              Container(
+                height: height,
+                width: width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.black54, width: 2)),
+                child: StreamBuilder(
+                    stream:myStream,
+                    builder:
+                        (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return const Text('Something went wrong');
+                      }
+
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const LoadingWidget();
+                      }
+                      //List<Comanda?> allComanda = snapshot.data!;
+                      final allComandaSnapshot = snapshot.data!.docs;
+
+                      List<Comanda?> allComanda = [];
+
+                      for (int i = 0; i < allComandaSnapshot.length; i++) {
+
+                        List<String?> cibi = [];
+                        for (int j = 0; j < allComandaSnapshot[i].data()['list'].length; j++) {
+                          cibi.add(
+                              allComandaSnapshot[i].data()['list'][j]);
+                        }
+                        List<String?> foodNames = [];
+                        for (int j = 0; j < allComandaSnapshot[i].data()['foodNameList'].length; j++) {
+                          foodNames.add(
+                              allComandaSnapshot[i].data()['foodNameList'][j]);
+                        }
+                        List<int> foodQuantity = [];
+                        for (int j = 0; j < allComandaSnapshot[i].data()['quantityList'].length; j++) {
+                          foodQuantity.add(
+                              allComandaSnapshot[i].data()['quantityList'][j]);
+                        }
+
+
+                        DateTime dateTime = allComandaSnapshot[i]
+                            .data()['createdAt']
+                            .toDate();
+                        String request = allComandaSnapshot[i].data()['request'];
+
+                        //TODO occhio qua
+                          /*
+                        List<bool> boolList= [];
+                        for(int y=0;y<allComandaSnapshot.length;y++){
+                          boolList.add(allComandaSnapshot[y].data()['isActive']);
+                          myList.add(allComandaSnapshot[y].data()['isActive']);
+                        }
+                        //sing(boolList: boolList);
+                        */
+
+
+
+
+                        Comanda comanda = Comanda(
+                          request: request,
+                          foodNameList: foodNames,
+                          quantityList:  foodQuantity,
+                          isActive:
+                              allComandaSnapshot[i].data()['isActive'],
+                          id: allComandaSnapshot[i].data()['id'],
+                          createdAt: dateTime,
+                          list: cibi,
+                          time: allComandaSnapshot[i].data()['time'],
+                          tableNumber:
+                              allComandaSnapshot[i].data()['tableNumber'],
+                        );
+
+                        allComanda.add(comanda);
+
+                      }
+                      snapshotOrderList.clear();
+
+                      for(int i=0; i<allComanda.length;i++){
+                        snapshotOrderList.add(allComanda[i]);
+                      }
+
+
+
+                          return allComanda.isEmpty
+                          ? Center(
+                              child: Center(
+                              child: Text(
+                                'Nessuna comanda ricevuta ',
+                              ),
+                            ))
+                          : Container(
+                              height: height,
+                              width: width,
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: ListView.builder(
+                                    controller: _normalComandaController,
+                                   // physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, int index) {
+                                      return ComandaItemUser(
+                                          comanda: allComanda[index]);
+                                    },
+                                    itemCount: allComanda.length,
+                                  ),
+                                ),
+                              ),
+                            );
+                    }),
+              ),
+              /*
+              IconButton(onPressed: (){
+                print('ok');
+               // _normalComandaController.jumpTo(0.0);
+                 //scrollToFirstTile();
+              }, icon: Icon(CupertinoIcons.arrow_up))*/
+        ),
+    DeleteAllButton(collectionName: 'comanda')
+      ],
     );
   }
 }
