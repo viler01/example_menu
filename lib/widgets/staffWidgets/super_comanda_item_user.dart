@@ -24,10 +24,8 @@ class _SuperComandaItemUserState extends State<SuperComandaItemUser> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: widget.comanda!.isActive ? Colors.cyanAccent : Color.fromRGBO(255, 0, 0, 0.2),
+          color: widget.comanda!.isActive ? selectedColor : secondaryColor,
         ),
-        height: 490,
-        width: 350,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -37,23 +35,26 @@ class _SuperComandaItemUserState extends State<SuperComandaItemUser> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text('tavolo : ${widget.comanda!.tableNumber.toString()}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text('ora ordine ->  ${widget.comanda!.time}'),
-                        ),
-                      ]
+                  Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text('Tavolo: ${widget.comanda!.tableNumber.toString()}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text('${widget.comanda!.time}'),
+                          ),
+                        ]
 
+                    ),
                   ),
                   CupertinoSwitch(
                     // This bool value toggles the switch.
                     value: widget.comanda!.isActive,
-                    activeColor: CupertinoColors.activeBlue,
+                    activeColor: mainColor,
                     onChanged: (bool? value) {
                       // This is called when the user toggles the switch.
                     DatabaseSupercomanda databaseSuperComanda= DatabaseSupercomanda();
@@ -77,31 +78,23 @@ class _SuperComandaItemUserState extends State<SuperComandaItemUser> {
 
             ),
             Container(
-              height: 350,
-              width: 450,
-
-              child:  Scrollbar(
-                trackVisibility: true,
-                thumbVisibility: true,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-
-                          children: [
-                            Text('${widget.comanda!.quantityList[index]} x ${widget.comanda!.foodNameList[index]}',style: kFoodTitleUserTextStyle,),
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: widget.comanda!.quantityList.length,
-                  ),
+              child:  Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${widget.comanda!.quantityList[index]} x ${widget.comanda!.foodNameList[index]}',style: kFoodTitleUserTextStyle,),
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: widget.comanda!.quantityList.length,
                 ),
               ),
             ),

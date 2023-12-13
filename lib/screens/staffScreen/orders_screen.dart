@@ -1,3 +1,4 @@
+import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffTitle.dart';
 
 import '../../services/imports.dart';
@@ -154,20 +155,58 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
     }
 
-    return SingleChildScrollView(
-
-      primary: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          StaffTitle(title: "Le tue comande",),
-          SmallComanda(height: height, width: width, myStream: myStream, snapshotOrderList: snapshotOrderList, normalComandaController: _normalComandaController),
-          InsertTableNumber(vertical_padding: vertical_padding, horizontal_padding: horizontal_padding, tableNumber: tableNumber),
-          BottoneCompatta(tableNumber: tableNumber, compattaComanda: compattaComanda,),
-          BigComanda(height: height, width: width, superComandaStream: superComandaStream),
-        ],
+    return Scaffold(
+      body: CustomPaint(
+        painter: MyBackground(),
+        child: Container(
+          height: double.infinity,
+          child: SafeArea(
+              child: LayoutBuilder(
+                  builder: (context, constrained){
+                    if(constrained.maxWidth > horizontalLayout){
+                      double horizontalWidth = constrained.maxWidth * 0.35;
+                      double horizontalHeight = constrained.maxHeight - 200;
+                      return Column(
+                        children: [
+                          StaffTitle(title: "Le tue comande",),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SmallComanda(height: horizontalHeight, width: horizontalWidth, myStream: myStream, snapshotOrderList: snapshotOrderList),
+                              Expanded(
+                                  child: Container(
+                                    height: horizontalHeight,
+                                    child: Column(
+                                      children: [
+                                        InsertTableNumber(vertical_padding: vertical_padding, horizontal_padding: horizontal_padding, tableNumber: tableNumber),
+                                        BottoneCompatta(tableNumber: tableNumber, compattaComanda: compattaComanda)
+                                      ],
+                                    ),
+                                  )
+                              ),
+                              BigComanda(height: horizontalHeight, width: horizontalWidth, superComandaStream: superComandaStream)
+                            ],
+                          )
+                        ],
+                      );
+                    }else{
+                      double verticalSize = constrained.maxWidth * 0.8;
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            StaffTitle(title: "Le tue comande",),
+                            SmallComanda(height: verticalSize, width: verticalSize, myStream: myStream, snapshotOrderList: snapshotOrderList),
+                            InsertTableNumber(vertical_padding: vertical_padding, horizontal_padding: horizontal_padding, tableNumber: tableNumber),
+                            BottoneCompatta(tableNumber: tableNumber, compattaComanda: compattaComanda),
+                            BigComanda(height: verticalSize, width: verticalSize, superComandaStream: superComandaStream)
+                          ],
+                        ),
+                      );
+                    }
+                  }
+              )
+          ),
+        )
       ),
     );
   }
@@ -254,12 +293,12 @@ class BigComanda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.all(10),
           child: Container(
-            height: height,
+            height: height - 80,
             width: width,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -380,24 +419,22 @@ class SmallComanda extends StatelessWidget {
     required this.width,
     required this.myStream,
     required this.snapshotOrderList,
-    required ScrollController normalComandaController,
-  }) : _normalComandaController = normalComandaController;
+  });
 
   final double height;
   final double width;
   final Stream myStream;
   final List<Comanda?> snapshotOrderList;
-  final ScrollController _normalComandaController;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.all(10),
           child:
               Container(
-                height: height,
+                height: height - 80,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -496,7 +533,6 @@ class SmallComanda extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: ListView.builder(
-                                    controller: _normalComandaController,
                                    // physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,

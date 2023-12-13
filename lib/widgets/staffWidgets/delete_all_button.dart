@@ -14,9 +14,9 @@ class _DeleteAllButtonState extends State<DeleteAllButton> {
   @override
   Widget build(BuildContext context) {
     return    Padding(
-      padding: const EdgeInsets.all( 20.0),
+      padding: const EdgeInsets.all(10),
       child: Container(
-        height: 80,
+        height: 60,
         child: IconButton(onPressed: (){
           showDialog(
               context: context,

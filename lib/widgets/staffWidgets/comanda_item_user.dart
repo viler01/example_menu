@@ -1,8 +1,6 @@
 import '../../services/imports.dart';
 import 'package:flutter/cupertino.dart';
-
 class ComandaItemUser extends StatefulWidget {
-
   final Comanda? comanda;
 
 
@@ -13,24 +11,21 @@ class ComandaItemUser extends StatefulWidget {
 }
 
 class _ComandaItemUserState extends State<ComandaItemUser> {
-
   bool switchValue = false;
+
 
   @override
   Widget build(BuildContext context) {
 
     bool requestOn= widget.comanda!.request == " "? false : true;
 
-
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-            color: widget.comanda!.isActive ? Colors.cyanAccent : Color.fromRGBO(255, 0, 0, 0.2),
+            color: widget.comanda!.isActive ? selectedColor : secondaryColor,
         ),
-        height: 490,
-        width: 350,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -40,23 +35,26 @@ class _ComandaItemUserState extends State<ComandaItemUser> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text('tavolo : ${widget.comanda!.tableNumber.toString()}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text('ora ordine ->  ${widget.comanda!.time}'),
-                      ),
-                       ]
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text('Tavolo: ${widget.comanda!.tableNumber.toString()}',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text('${widget.comanda!.time}'),
+                        ),
+                         ]
 
+                    ),
                   ),
               CupertinoSwitch(
                     // This bool value toggles the switch.
                     value: widget.comanda!.isActive,
-                    activeColor: CupertinoColors.activeBlue,
+                    activeColor: mainColor,
                     onChanged: (bool? value) {
                       // This is called when the user toggles the switch.
                   DatabaseComanda databaseComanda= DatabaseComanda();
@@ -70,6 +68,7 @@ class _ComandaItemUserState extends State<ComandaItemUser> {
                     list: widget.comanda!.list,
                     isActive: !widget.comanda!.isActive,
                     time: widget.comanda!.time
+
                   );
                   databaseComanda.createEdit(comanda: comanda, isEdit: true);
                     },
@@ -79,31 +78,23 @@ class _ComandaItemUserState extends State<ComandaItemUser> {
 
             ),
             Container(
-              height: 350,
-              width: 450,
-
-              child:  Scrollbar(
-                trackVisibility: true,
-                thumbVisibility: true,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-
-                          children: [
-                            Text(widget.comanda!.list[index]!),
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: widget.comanda!.list.length,
-                  ),
+              child:  Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(widget.comanda!.list[index]!),
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: widget.comanda!.list.length,
                 ),
               ),
             ),
