@@ -485,8 +485,9 @@ class _AllergensCheckGridState extends State<AllergensCheckGrid> {
                          }
                          else{
                            setState(() {
-                             widget.allergenList.remove(widget.allAllergenList[i]);
-
+                             widget.allergenList.remove(widget.allAllergenList[i].toString());
+                             for(var all in widget.allergenList)
+                               print(all);
                            });
                          }
                              },
