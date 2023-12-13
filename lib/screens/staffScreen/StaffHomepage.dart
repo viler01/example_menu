@@ -1,4 +1,3 @@
-import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/screens/staffScreen/StaffEditScreen.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/staffWidgets/StaffActiveFoodCard.dart';
@@ -14,12 +13,13 @@ class StaffHomepage extends StatefulWidget {
 
 class _StaffHomepageState extends State<StaffHomepage> {
 
-  late Stream<List<Food?>> myStream;
+  late Stream  myStream;
 
   @override
   void initState( ) {
 
-    myStream = DatabaseFood.allFood;
+    myStream = FirebaseFirestore.instance
+        .collection('foods').snapshots();
 
     super.initState();
   }
@@ -47,10 +47,10 @@ class _StaffHomepageState extends State<StaffHomepage> {
                         width: constraints.maxWidth > horizontalLayout
                                 ? horizontalLayout - 60 //60 è il padding dei due lati
                                 : null,
-                        child: StreamBuilder<List<Food?>>(
+                        child: StreamBuilder(
                             stream: myStream,
                             builder: (BuildContext context,
-                                AsyncSnapshot<List<Food?>> snapshot) {
+                                AsyncSnapshot  snapshot) {
                               if (snapshot.hasError) {
                                 print(snapshot.error);
                                 return const Text('Something went wrong');
@@ -61,7 +61,15 @@ class _StaffHomepageState extends State<StaffHomepage> {
                                 return const LoadingWidget();
                               }
 
-                              List<Food?> allFood = snapshot.data!;
+                              final  allFoodSnapshot = snapshot.data!.docs;
+
+                              List <Food?> allFood = [];
+
+                              for (int i = 0; i < allFoodSnapshot.length; i++){
+                                Food food  =  DatabaseFood.foodFromSnapshot(allFoodSnapshot[i])!;
+
+                                allFood.add(food);
+                              }
 
                               List<Food?> aperitifsList = getRightFood(
                                   allFood, 'FoodCategory.aperitifs',true);
@@ -201,6 +209,7 @@ class StaffLayoutBuilder extends StatelessWidget {
                 children: children.sublist(children.length ~/ 2),
               ),
             )
+
           ],
         );
       default:
