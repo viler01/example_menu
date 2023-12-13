@@ -165,7 +165,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   builder: (context, constrained){
                     if(constrained.maxWidth > horizontalLayout){
                       double horizontalWidth = constrained.maxWidth * 0.35;
-                      double horizontalHeight = constrained.maxHeight - 200;
+                      double horizontalHeight = constrained.maxHeight - 280;
                       return Column(
                         children: [
                           StaffTitle(title: "Le tue comande",),
@@ -298,7 +298,7 @@ class BigComanda extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(10),
           child: Container(
-            height: height - 80,
+            height: height,
             width: width,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -385,8 +385,7 @@ class BigComanda extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: ListView.builder(
-                          physics:
-                          const NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, int index) {
@@ -433,7 +432,7 @@ class SmallComanda extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child:
               Container(
-                height: height - 80,
+                height: height,
                 width: width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -532,7 +531,7 @@ class SmallComanda extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: ListView.builder(
-                                   // physics: const NeverScrollableScrollPhysics(),
+                                   physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (context, int index) {
