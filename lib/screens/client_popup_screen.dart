@@ -61,16 +61,22 @@ class _ClientPopupScreenState extends State<ClientPopupScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (values[index]! != 0) ...[
-                          Padding(
+                          Expanded(child:Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               keys[index]!,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis
+                              ),
                             ),
-                          ),
+                          ),),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Text(
-                              values[index].toString(),
+                              "   X ${values[index].toString()}",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold
+                              ),
                             ),
                           )
                         ],

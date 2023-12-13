@@ -87,7 +87,7 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                       return  CustomScrollView(
                         slivers: [
                           SliverToBoxAdapter(
-                            child: StaffTitle(title: 'Add Dish',),
+                            child: StaffTitle(title: 'Aggiungi piatto',),
                           ),
                           SliverCrossAxisGroup(
                               slivers: [

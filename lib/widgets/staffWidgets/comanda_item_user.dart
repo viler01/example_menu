@@ -82,16 +82,12 @@ class _ComandaItemUserState extends State<ComandaItemUser> {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(), //QUESTO LHO MESSO IO NON CENTRA CON IL NOSTRO PROBLEMA DELLO SCROLL <3<3<3<3
+                  //scrollDirection: Axis.vertical,
                   itemBuilder: (context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.comanda!.list[index]!),
-                        ],
-                      ),
+                      child: Text(widget.comanda!.list[index]!),
                     );
                   },
                   itemCount: widget.comanda!.list.length,

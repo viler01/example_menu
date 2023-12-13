@@ -82,16 +82,12 @@ class _SuperComandaItemUserState extends State<SuperComandaItemUser> {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(), //QUESTO LHO MESSO IO NON CENTRA CON IL NOSTRO PROBLEMA DELLO SCROLL <3<3<3<3
+                  //scrollDirection: Axis.vertical,
                   itemBuilder: (context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${widget.comanda!.quantityList[index]} x ${widget.comanda!.foodNameList[index]}',style: kFoodTitleUserTextStyle,),
-                        ],
-                      ),
+                      child: Text('${widget.comanda!.quantityList[index]} x ${widget.comanda!.foodNameList[index]}',style: kFoodTitleUserTextStyle,),
                     );
                   },
                   itemCount: widget.comanda!.quantityList.length,

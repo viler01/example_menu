@@ -376,7 +376,6 @@ class BigComanda extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'Nessuna comanda ricevuta ',
-                          style: TextStyle(color: kPrimaryColor),
                         ),
                       ))
                       : Container(

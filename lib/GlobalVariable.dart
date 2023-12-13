@@ -38,7 +38,7 @@ Future<void> deleteCollection(String collectionPath) async {
 
 //TextStyles
 TextStyle kAccountTextStyle =
-TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: kPrimaryColor);
+TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: mainColor);
 TextStyle kNiceTextStyle =
 TextStyle(fontSize: 18, color: kHighlightedTextColor);
 TextStyle kFoodTitleTextStyle = TextStyle(

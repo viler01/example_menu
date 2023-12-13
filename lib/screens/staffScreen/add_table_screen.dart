@@ -86,7 +86,7 @@ class _AddTableScreenState extends State<AddTableScreen> {
                             ),
                           ),
                           CupertinoButton(
-                            color: kPrimaryColor,
+                            color: mainColor,
                             onPressed: () async {
                               try {
                                 EasyLoading.show();
@@ -176,7 +176,7 @@ class _AddTableScreenState extends State<AddTableScreen> {
                             ),
                           ),
                           CupertinoButton(
-                            color: kPrimaryColor,
+                            color: mainColor,
                             onPressed: () async {
                               try {
                                 EasyLoading.show();
