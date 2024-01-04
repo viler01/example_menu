@@ -210,6 +210,7 @@ class _ClientPopupScreenState extends State<ClientPopupScreen> {
             String date = '${now.hour} : ${now.minute}';
             DatabaseComanda databaseComanda = DatabaseComanda();
             Comanda comanda = Comanda(
+              isGathered: false,
               request: requestController.text.isEmpty ? " " : requestController.text,
               quantityList: quantityList,
                 foodNameList: foodNameList,

@@ -112,6 +112,16 @@ class _HomePageState extends State<HomePage> {
 
                 const Divider(color: Colors.black,),
                 ListTile(
+                  leading: const Icon(Icons.account_balance_wallet_rounded),
+                  title: const Text('My orders'),
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return OrderHistoryScreen();
+                        }));
+                  },
+                ),
+                ListTile(
                   leading: const Icon(Icons.person),
                   title: const Text('Staff Login'),
                   onTap: ()

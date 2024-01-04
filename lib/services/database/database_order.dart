@@ -8,6 +8,7 @@ class DatabaseComanda {
 
     return  !isEdit ?
     await comandaCollection.doc(comanda.id).set({
+      'isGathered': comanda.isGathered,
       'list': comanda.list,
       'time' : comanda.time,
       'id': comanda.id,
@@ -21,6 +22,7 @@ class DatabaseComanda {
     })
         :
     await comandaCollection.doc(comanda.id).update({
+      'isGathered': comanda.isGathered,
       'list': comanda.list,
       'time' : comanda.time,
       'id': comanda.id,
@@ -42,6 +44,7 @@ class DatabaseComanda {
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
 
     return Comanda(
+      isGathered : snapshot.data()?['isGathered']?? false,
       request:snapshot.data()?['request'] ?? "",
       isActive: snapshot.data()?['isActive']?? false,
       id : snapshot.data()?['id'] ?? "",

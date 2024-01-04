@@ -41,7 +41,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   void compattaComandaTimer(){
 
-    Timer.periodic(Duration(seconds: 60), (Timer t) {
+    Timer.periodic(Duration(seconds: 20), (Timer t) {
 
       ///this for loop tracks all the table numbers
       for(int t=0 ; t< snapshotOrderList.length;t++){
@@ -63,8 +63,28 @@ class _OrdersScreenState extends State<OrdersScreen> {
         List<String> requestListTimer = [];
         for (int j = 0; j < snapshotOrderList.length; j++) {
           ///tempListTimer gets all the orders and requests with the current table number
-          if (tableNumberList[i] == snapshotOrderList[j]!.tableNumber) {
+          if (tableNumberList[i] == snapshotOrderList[j]!.tableNumber && snapshotOrderList[j]!.isGathered == false ) {
             tempListTimer.add(snapshotOrderList[j]!);
+
+            ///update "isGathered" state of the order
+            DatabaseComanda databaseComanda = DatabaseComanda();
+
+            Comanda comanda = Comanda(
+                isActive: snapshotOrderList[j]!.isActive,
+                isGathered: true,
+                time: snapshotOrderList[j]!.time,
+                id: snapshotOrderList[j]!.id,
+                createdAt: snapshotOrderList[j]!.createdAt,
+                tableNumber: snapshotOrderList[j]!.tableNumber,
+                foodNameList: snapshotOrderList[j]!.foodNameList,
+                quantityList: snapshotOrderList[j]!.quantityList,
+                request: snapshotOrderList[j]!.request,
+                requestList: snapshotOrderList[j]!.requestList,
+                list: snapshotOrderList[j]!.list
+            );
+
+            databaseComanda.createEdit(comanda: comanda, isEdit:true);
+
             if (snapshotOrderList[j]!.request != " ") {
               requestListTimer.add(snapshotOrderList[j]!.request);
             }
@@ -102,6 +122,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           String date = '${now.hour} : ${now.minute}';
 
           Comanda comandaTimer = Comanda(
+            isGathered: true,
               id: comandaTimerId,
               time: date,
               list: [],
@@ -125,7 +146,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         requestListTimer.clear();
 
       }
-      deleteCollection('comanda');
+
     });
 
   }
@@ -219,6 +240,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       String id = uuid.v1();
 
       Comanda comanda = Comanda(
+        isGathered: true,
         requestList: stringList,
         request:" ",
         time: date ,
@@ -452,9 +474,11 @@ class BigComanda extends StatelessWidget {
                           .data()['createdAt']
                           .toDate();
                       String request = allSuperComandaSnapshot[i].data()['request'];
+                      bool isGathered = allSuperComandaSnapshot[i].data()['isGathered'];
 
 
                       Comanda comanda = Comanda(
+                        isGathered: isGathered,
                         requestList: requestList,
                         request: request,
                         foodNameList: foodNames,
@@ -579,8 +603,10 @@ class SmallComanda extends StatelessWidget {
                             .data()['createdAt']
                             .toDate();
                         String request = allComandaSnapshot[i].data()['request'];
+                        bool isGathered = allComandaSnapshot[i].data()['isGathered'];
 
                         Comanda comanda = Comanda(
+                          isGathered: isGathered,
                           request: request,
                           foodNameList: foodNames,
                           quantityList:  foodQuantity,
@@ -594,7 +620,9 @@ class SmallComanda extends StatelessWidget {
                               allComandaSnapshot[i].data()['tableNumber'],
                         );
 
-                        allComanda.add(comanda);
+                        if(comanda.isGathered == false){
+                          allComanda.add(comanda);
+                        }
 
                       }
                       snapshotOrderList.clear();

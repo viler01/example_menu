@@ -9,6 +9,7 @@ class DatabaseSupercomanda{
 
     return  !isEdit ?
     await superComandaCollection.doc(comanda.id).set({
+      'isGathered' : comanda.isGathered,
       'request': comanda.request,
       'list': comanda.list,
       'time' : comanda.time,
@@ -22,6 +23,7 @@ class DatabaseSupercomanda{
     })
         :
     await superComandaCollection.doc(comanda.id).update({
+      'isGathered' : comanda.isGathered,
       'request': comanda.request,
       'list': comanda.list,
       'time' : comanda.time,
@@ -43,6 +45,7 @@ class DatabaseSupercomanda{
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
 
     return Comanda(
+      isGathered : snapshot.data()?['isGathered']?? false,
       request:snapshot.data()?['request'] ?? "",
       isActive: snapshot.data()?['isActive']?? false,
       id : snapshot.data()?['id'] ?? "",

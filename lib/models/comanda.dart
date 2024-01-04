@@ -8,8 +8,10 @@ class Comanda{
  final List<String?> foodNameList;
 final List<int> quantityList;
 final String request;
+bool isGathered;
  List<String>? requestList;
   Comanda({
+    required this.isGathered,
     required this.id,
     required this.time,
     required this.list,

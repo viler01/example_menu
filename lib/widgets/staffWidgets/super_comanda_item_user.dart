@@ -59,6 +59,7 @@ class _SuperComandaItemUserState extends State<SuperComandaItemUser> {
                       // This is called when the user toggles the switch.
                     DatabaseSupercomanda databaseSuperComanda= DatabaseSupercomanda();
                       Comanda comanda = Comanda(
+                        isGathered: widget.comanda!.isGathered,
                           request:  widget.comanda!.request,
                           quantityList: widget.comanda!.quantityList,
                           foodNameList: widget.comanda!.foodNameList,
