@@ -32,6 +32,104 @@ class _OrdersScreenState extends State<OrdersScreen> {
   List<Comanda?>snapshotOrderList= [];
 
 
+  ///tentativo timer
+
+  List<String> stringListTimer=[];
+
+  List<double> tableNumberList = [];
+  Map<double,Comanda> tableNumberComandeMap= {};
+
+  void compattaComandaTimer(){
+
+    Timer.periodic(Duration(seconds: 60), (Timer t) {
+
+      ///this for loop tracks all the table numbers
+      for(int t=0 ; t< snapshotOrderList.length;t++){
+        if(!tableNumberList.contains(snapshotOrderList[t]!.tableNumber )){
+          tableNumberList.add(snapshotOrderList[t]!.tableNumber );
+        }
+      }
+
+      ///The purpose of the following for loop is to create a Map in which the key is the table number and the value a list of
+      ///"comande" that were sent from that table
+
+      for(int i=0 ; i< tableNumberList.length; i++) {
+        /// temporary list that get all the orders of the table considered by the loop
+        List<Comanda>tempListTimer = [];
+
+        ///temporary lists used to check if there are more dishes with the same name and to get the requests from the current table
+        List<String?> tempNameListTimer = [];
+        List<int> tempQuantityListTimer = [];
+        List<String> requestListTimer = [];
+        for (int j = 0; j < snapshotOrderList.length; j++) {
+          ///tempListTimer gets all the orders and requests with the current table number
+          if (tableNumberList[i] == snapshotOrderList[j]!.tableNumber) {
+            tempListTimer.add(snapshotOrderList[j]!);
+            if (snapshotOrderList[j]!.request != " ") {
+              requestListTimer.add(snapshotOrderList[j]!.request);
+            }
+          }
+        }
+
+        for(int index=0; index< requestListTimer.length;index++){
+          print(requestListTimer[index]);
+        }
+
+        ///check if dishes with the same name are already inserted
+        for (int t = 0; t < tempListTimer.length; t++) {
+          for (int u = 0; u < tempListTimer[t].foodNameList.length; u++) {
+            if (tempNameListTimer.contains(tempListTimer[t].foodNameList[u])) {
+              int index = tempNameListTimer.indexOf(
+                  tempListTimer[t].foodNameList[u]);
+
+              tempQuantityListTimer[index] += tempListTimer[t].quantityList[u];
+            } else {
+              tempNameListTimer.add(tempListTimer[t].foodNameList[u]);
+              tempQuantityListTimer.add(tempListTimer[t].quantityList[u]);
+            }
+          }
+        }
+
+        for (int h = 0; h < tempNameListTimer.length; h++) {
+          print('${tempQuantityListTimer[h]} x ${tempNameListTimer[h]}');
+        }
+
+        if(tempNameListTimer.isNotEmpty){
+          const uuid = Uuid();
+          String comandaTimerId = uuid.v1();
+
+          DateTime now = DateTime.now();
+          String date = '${now.hour} : ${now.minute}';
+
+          Comanda comandaTimer = Comanda(
+              id: comandaTimerId,
+              time: date,
+              list: [],
+              tableNumber: tableNumberList[i],
+              createdAt: DateTime.now(),
+              isActive: false,
+              foodNameList: tempNameListTimer,
+              quantityList: tempQuantityListTimer,
+              request: ' ',
+              requestList: requestListTimer
+          );
+
+          DatabaseSupercomanda databaseSupercomanda = DatabaseSupercomanda();
+          databaseSupercomanda.createEdit(comanda: comandaTimer, isEdit: false);
+
+        }
+
+        tempQuantityListTimer.clear();
+        tempListTimer.clear();
+        tempNameListTimer.clear();
+        requestListTimer.clear();
+
+      }
+      deleteCollection('comanda');
+    });
+
+  }
+
 
   TextEditingController tableNumber = TextEditingController();
 
@@ -52,7 +150,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
         .orderBy('createdAt', descending: true)
         .snapshots();
 
-   super.initState();
+    compattaComandaTimer();
+
+
+    super.initState();
   }
   bool isFirstLaunch=true;
 
@@ -478,19 +579,6 @@ class SmallComanda extends StatelessWidget {
                             .data()['createdAt']
                             .toDate();
                         String request = allComandaSnapshot[i].data()['request'];
-
-                        //TODO occhio qua
-                          /*
-                        List<bool> boolList= [];
-                        for(int y=0;y<allComandaSnapshot.length;y++){
-                          boolList.add(allComandaSnapshot[y].data()['isActive']);
-                          myList.add(allComandaSnapshot[y].data()['isActive']);
-                        }
-                        //sing(boolList: boolList);
-                        */
-
-
-
 
                         Comanda comanda = Comanda(
                           request: request,
