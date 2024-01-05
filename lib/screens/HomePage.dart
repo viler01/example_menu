@@ -1,11 +1,13 @@
-import 'package:example_menu/GlobalVariable.dart';
 import 'package:example_menu/models/language_model.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
 import 'package:example_menu/widgets/costumersWidgets/FoodCardMenu.dart';
 import '../services/imports.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,6 +19,11 @@ class _HomePageState extends State<HomePage> {
   int subValue = 1;
   double iconPadding = 4;
   Map<String, int> myDictionary = {};
+
+  int index=0;
+  TextEditingController tableController = TextEditingController();
+  TextEditingController requestController = TextEditingController();
+
 
   late Stream<List<Food?>> myStream;
 
@@ -63,7 +70,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
+    return index ==0 ? Scaffold(
 
 
       appBar: AppBar(
@@ -71,6 +78,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
+                /*
                 ///in questo modo ottengo il refresh della pagina e si azzerano i numeri delle portate
                 showModalBottomSheet(
                   backgroundColor: Colors.white,
@@ -83,7 +91,12 @@ class _HomePageState extends State<HomePage> {
                 ).then((value) {
                   myDictionary.clear();
                   setState(() {});
+                });*/
+
+                setState(() {
+                  index=1;
                 });
+
               },
               icon: Icon(
                 Icons.shopping_cart_outlined,
@@ -249,9 +262,306 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       )
+    ) :
+    ///client pop up screen now is here
+    Scaffold(
+      body:  SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: IconButton(
+                  icon: Icon(CupertinoIcons.arrow_down_circle_fill),
+                  onPressed: () {
+                   setState(() {
+                     index=0;
+                   });
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                height: 220,
+                width: 350,
+                child: ListView.builder(
+                  // physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, int index) {
+
+                    List<int?>  values = myDictionary.values.toList();
+                    List<String?> keys = myDictionary.keys.toList();
+
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (values[index]! != 0) ...[
+                          Expanded(child:Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              keys[index]!,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis
+                              ),
+                            ),
+                          ),),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "   X ${values[index].toString()}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          )
+                        ],
+                      ],
+                    );
+                  },
+                  itemCount: myDictionary.length,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+              child: TextFormField(
+                  controller: requestController,
+                  textAlign: TextAlign.center,
+
+                  decoration:
+                  InputDecoration(hintText: 'ci sono richieste particolari?')),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              child: TextFormField(
+                  controller: tableController,
+                  keyboardType: TextInputType.numberWithOptions(
+                      decimal: true
+                  ),
+                  textAlign: TextAlign.center,
+
+                  decoration:
+                  InputDecoration(hintText: 'inserire il numero del tavolo')),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: CupertinoButton(
+                child: Text('invia ordine'),
+                onPressed: () async {
+                  try{
+                    List<int?>  values = myDictionary.values.toList();
+                    List<String?> keys = myDictionary.keys.toList();
+
+                    String tableNumberFormatted = tableController.text.replaceAll(',', '.');
+                    double myNumber = double.parse(tableNumberFormatted);
+                    if (tableController.text.isEmpty) {
+                      await  notTableNumber(isTable : true);
+
+                    }
+
+                    if (keys.isEmpty) {
+
+                      await notTableNumber(isTable: false);
+                    }
+                    else {
+
+                      createOrder();
+                    }
+                    // Navigator.pop(context);
+                  }catch(e){
+                    showModalBottomSheet(
+                      backgroundColor: Colors.white,
+                      context: context,
+                      isScrollControlled: true,
+                      isDismissible: true,
+                      builder: (context) => Container(
+                        height: 200,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'inserire un numero di tavolo valido',
+                                  style: TextStyle(fontSize: 15, color: Colors.red),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CupertinoButton(
+                                child: Text('chiudi'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+
+                  }
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  void createOrder() async {
+    CollectionReference<Map<String, dynamic>> tableCollection =
+    FirebaseFirestore.instance.collection('tables');
+
+    int check = 0;
+
+    String tableNumberFormatted = tableController.text.replaceAll(',', '.');
+    double myNumber = double.parse(tableNumberFormatted);
+
+    await tableCollection.get().then(
+          (querySnapshot) {
+        for (var docSnapshot in querySnapshot.docs) {
+          if (docSnapshot.data()['fakeNumber'] == myNumber) {
+            check++;
+            List<String?> list = [];
+            List<String?> foodNameList=[];
+            List<int> quantityList=[];
+            myDictionary.forEach((key, value) {
+              if (value != 0) {
+                String temp = '$value x $key ';
+                list.add(temp);
+
+                String foodName= key;
+                int quantity = value;
+
+                foodNameList.add(foodName);
+                quantityList.add(quantity);
+
+              }
+            });
+            const uuid = Uuid();
+            String id = uuid.v1();
+            DateTime now = DateTime.now();
+            String date = '${now.hour} : ${now.minute}';
+            DatabaseComanda databaseComanda = DatabaseComanda();
+            Comanda comanda = Comanda(
+                isGathered: false,
+                request: requestController.text.isEmpty ? " " : requestController.text,
+                quantityList: quantityList,
+                foodNameList: foodNameList,
+                isActive: false,
+                createdAt: DateTime.now(),
+                id: id,
+                tableNumber: myNumber,
+                list: list,
+                time: date);
+            databaseComanda.createEdit(comanda: comanda, isEdit: false);
+
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (_) => CupertinoAlertDialog(
+                  title: Text('ordine inviato con successo'),
+                  actions: [
+                    CupertinoDialogAction(child: Text('torna al menu'),onPressed: (){
+                     setState(() {
+                       myDictionary.clear();
+                       requestController.clear();
+                       tableController.clear();
+                       index=0;
+                     });
+                     Navigator.pop(context);
+                    },)
+                  ],
+                )  );
+          }
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    if (check == 0) {
+
+      showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        isScrollControlled: true,
+        isDismissible: true,
+        builder: (context) => Container(
+          height: 200,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'inserire un numero di tavolo valido',
+                    style: TextStyle(fontSize: 15, color: Colors.red),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CupertinoButton(
+                  child: Text('chiudi'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  Future  notTableNumber({required bool isTable}) async {
+    await  showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      isScrollControlled: true,
+      isDismissible: true,
+      builder: (context) =>
+          Container(
+            height: 200,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    isTable ? 'inserire un numero di tavolo valido' : 'inserire dei cibi prima di ordinare',
+                    style: TextStyle(fontSize: 15, color: Colors.red),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoButton(
+                    child: Text('chiudi'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
     );
   }
 }
+
+
+
+
 List<Food?> getActiveFood(List<Food?> list, String course) {
   List<Food?> foodList = [];
 
@@ -263,3 +573,7 @@ List<Food?> getActiveFood(List<Food?> list, String course) {
   }
   return foodList;
 }
+
+
+
+

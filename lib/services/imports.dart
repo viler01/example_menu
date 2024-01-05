@@ -51,7 +51,6 @@ export '../screens/staffScreen/LoginScreen.dart';
 export '../screens/staffScreen/add_table_screen.dart';
 export '../screens/staffScreen/StaffHomepage.dart';
 export '../screens/HomePage.dart';
-export '../screens/client_popup_screen.dart';
 export '../screens/staffScreen/orders_screen.dart';
 export '../screens/orderHistoryScreen.dart';
 
