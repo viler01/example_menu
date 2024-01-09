@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
 
 
       appBar: AppBar(
-        title: Text(restourantName),
+        title: const Text(restourantName),
         actions: [
           IconButton(
               onPressed: () {
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                 });
 
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.shopping_cart_outlined,
                 color: Colors.green,
               ))
@@ -125,15 +125,16 @@ class _HomePageState extends State<HomePage> {
 
                 const Divider(color: Colors.black,),
                 ListTile(
-                  leading: const Icon(Icons.account_balance_wallet_rounded),
-                  title: const Text('My orders'),
+                  leading: const Icon(Icons.history),
+                  title: const Text('Cronologia ordini'),
                   onTap: (){
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                          return OrderHistoryScreen();
+                          return const OrderHistoryScreen();
                         }));
                   },
                 ),
+                const Divider(color: Colors.black,),
                 ListTile(
                   leading: const Icon(Icons.person),
                   title: const Text('Staff Login'),
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                               value: AuthService().user,
                               initialData: CurrentUser(),
                               catchError: (_, __) => null,
-                              child: AppDirector());
+                              child: const AppDirector());
                         }));
                   }
 
@@ -217,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                 foodCategory: FoodCategory.values[i]),
                             children: [
                               allFoodInList[i].isEmpty
-                                  ? Center(
+                                  ? const Center(
                                   child: Center(
                                     child: Text(
                                       'not already inserted ',
@@ -264,6 +265,136 @@ class _HomePageState extends State<HomePage> {
       )
     ) :
     ///client pop up screen now is here
+    Scaffold(
+      body: Column(
+        children: [
+          Center(child: IconButton(
+            icon: const Icon(CupertinoIcons.arrow_down_circle_fill),
+            onPressed: (){
+              setState(() {
+                index = 0;
+              });
+            },
+          ),),
+          Expanded( child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.all(20),
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, int index) {
+
+                List<int?>  values = myDictionary.values.toList();
+                List<String?> keys = myDictionary.keys.toList();
+
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (values[index]! != 0) ...[
+                      Expanded(child:Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          keys[index]!,
+                          style: const TextStyle(
+                              overflow: TextOverflow.ellipsis
+                          ),
+                        ),
+                      ),),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          "   X ${values[index].toString()}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      )
+                    ],
+                  ],
+                );
+              },
+              itemCount: myDictionary.length,
+            ),
+          )),
+          Expanded(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomTextField(
+                controller: requestController,
+                labelText: "Ci sono richieste paricolari?",
+              ),
+              CustomTextField(
+                controller: tableController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                labelText: "Inserire il numero del tavolo",
+              ),
+              ElevatedButton(
+                child: const Text("Invia ordine"),
+                onPressed: () async {
+                  try{
+                    List<int?>  values = myDictionary.values.toList();
+                    List<String?> keys = myDictionary.keys.toList();
+
+                    String tableNumberFormatted = tableController.text.replaceAll(',', '.');
+                    double myNumber = double.parse(tableNumberFormatted);
+                    if (tableController.text.isEmpty) {
+                      await  notTableNumber(isTable : true);
+
+                    }
+
+                    if (keys.isEmpty) {
+
+                      await notTableNumber(isTable: false);
+                    }
+                    else {
+
+                      createOrder();
+                    }
+                    // Navigator.pop(context);
+                  }catch(e){
+                    showModalBottomSheet(
+                      backgroundColor: Colors.white,
+                      context: context,
+                      isScrollControlled: true,
+                      isDismissible: true,
+                      builder: (context) => Container(
+                        height: 200,
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'inserire un numero di tavolo valido',
+                                  style: TextStyle(fontSize: 15, color: Colors.red),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CupertinoButton(
+                                child: const Text('chiudi'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+
+                  }
+                },
+              )
+            ],
+          ))
+        ],
+      ),
+    )
+    /*
     Scaffold(
       body:  SingleChildScrollView(
         child: Column(
@@ -414,7 +545,11 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    );
+    )
+
+     */
+
+    ;
   }
 
 
@@ -470,9 +605,9 @@ class _HomePageState extends State<HomePage> {
                 barrierDismissible: false,
                 context: context,
                 builder: (_) => CupertinoAlertDialog(
-                  title: Text('ordine inviato con successo'),
+                  title: const Text('ordine inviato con successo'),
                   actions: [
-                    CupertinoDialogAction(child: Text('torna al menu'),onPressed: (){
+                    CupertinoDialogAction(child: const Text('torna al menu'),onPressed: (){
                      setState(() {
                        myDictionary.clear();
                        requestController.clear();
@@ -499,10 +634,10 @@ class _HomePageState extends State<HomePage> {
           height: 200,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding:EdgeInsets.all(8.0),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     'inserire un numero di tavolo valido',
                     style: TextStyle(fontSize: 15, color: Colors.red),
@@ -540,13 +675,13 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     isTable ? 'inserire un numero di tavolo valido' : 'inserire dei cibi prima di ordinare',
-                    style: TextStyle(fontSize: 15, color: Colors.red),
+                    style: const TextStyle(fontSize: 15, color: Colors.red),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CupertinoButton(
-                    child: Text('chiudi'),
+                    child: const Text('chiudi'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
