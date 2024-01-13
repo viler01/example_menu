@@ -150,7 +150,18 @@ class _HomePageState extends State<HomePage> {
                         }));
                   }
 
-                )
+                ),
+                const Divider(color: Colors.black,),
+                ListTile(
+                  leading: const Icon(Icons.history),
+                  title: const Text('Schermata esempio'),
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const ExampleScreen1();
+                        }));
+                  },
+                ),
               ],
             ),
           ),
@@ -393,163 +404,7 @@ class _HomePageState extends State<HomePage> {
           ))
         ],
       ),
-    )
-    /*
-    Scaffold(
-      body:  SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Center(
-                child: IconButton(
-                  icon: Icon(CupertinoIcons.arrow_down_circle_fill),
-                  onPressed: () {
-                   setState(() {
-                     index=0;
-                   });
-                  },
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: 220,
-                width: 350,
-                child: ListView.builder(
-                  // physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, int index) {
-
-                    List<int?>  values = myDictionary.values.toList();
-                    List<String?> keys = myDictionary.keys.toList();
-
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (values[index]! != 0) ...[
-                          Expanded(child:Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              keys[index]!,
-                              style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis
-                              ),
-                            ),
-                          ),),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "   X ${values[index].toString()}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          )
-                        ],
-                      ],
-                    );
-                  },
-                  itemCount: myDictionary.length,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-              child: TextFormField(
-                  controller: requestController,
-                  textAlign: TextAlign.center,
-
-                  decoration:
-                  InputDecoration(hintText: 'ci sono richieste particolari?')),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-              child: TextFormField(
-                  controller: tableController,
-                  keyboardType: TextInputType.numberWithOptions(
-                      decimal: true
-                  ),
-                  textAlign: TextAlign.center,
-
-                  decoration:
-                  InputDecoration(hintText: 'inserire il numero del tavolo')),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: CupertinoButton(
-                child: Text('invia ordine'),
-                onPressed: () async {
-                  try{
-                    List<int?>  values = myDictionary.values.toList();
-                    List<String?> keys = myDictionary.keys.toList();
-
-                    String tableNumberFormatted = tableController.text.replaceAll(',', '.');
-                    double myNumber = double.parse(tableNumberFormatted);
-                    if (tableController.text.isEmpty) {
-                      await  notTableNumber(isTable : true);
-
-                    }
-
-                    if (keys.isEmpty) {
-
-                      await notTableNumber(isTable: false);
-                    }
-                    else {
-
-                      createOrder();
-                    }
-                    // Navigator.pop(context);
-                  }catch(e){
-                    showModalBottomSheet(
-                      backgroundColor: Colors.white,
-                      context: context,
-                      isScrollControlled: true,
-                      isDismissible: true,
-                      builder: (context) => Container(
-                        height: 200,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'inserire un numero di tavolo valido',
-                                  style: TextStyle(fontSize: 15, color: Colors.red),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CupertinoButton(
-                                child: Text('chiudi'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-
-                  }
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-    )
-
-     */
-
-    ;
+    );
   }
 
 
@@ -586,6 +441,8 @@ class _HomePageState extends State<HomePage> {
             const uuid = Uuid();
             String id = uuid.v1();
             DateTime now = DateTime.now();
+            DateTime formattedDateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute);
+
             String date = '${now.hour} : ${now.minute}';
             DatabaseComanda databaseComanda = DatabaseComanda();
             Comanda comanda = Comanda(
@@ -594,7 +451,7 @@ class _HomePageState extends State<HomePage> {
                 quantityList: quantityList,
                 foodNameList: foodNameList,
                 isActive: false,
-                createdAt: DateTime.now(),
+                createdAt: formattedDateTime,
                 id: id,
                 tableNumber: myNumber,
                 list: list,

@@ -1,3 +1,4 @@
+
 import '../../services/imports.dart';
 import 'package:example_menu/models/allergen_model.dart';
 import 'package:example_menu/widgets/GeneralWidget/MyBackground.dart';
@@ -15,6 +16,11 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
   DatabaseUser databaseUser = DatabaseUser();
 
   bool showLoading = false;
+
+  bool kitchenSelected = false;
+  bool barSelected = false;
+  bool dessertSelected = false;
+  String foodType = ' ';
 
   Uint8List? _fileBytes;
   String error = '';
@@ -185,6 +191,63 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                             allAllergenList: allAllergensList,
                             allergenList: foodAllegyList,
                           ),
+                          SliverToBoxAdapter(child: Text('selezionare il tipo di portata')),
+                          SliverToBoxAdapter(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                 GestureDetector(
+                                   onTap: (){
+                                     setState(() {
+                                       kitchenSelected = true;
+                                       barSelected=false;
+                                       dessertSelected = false;
+                                       foodType = 'Cucina';
+                                     });
+                                   },
+                                   child: Container(
+                                     color: kitchenSelected ? Colors.lightGreenAccent : Colors.white,
+                                     height: 80,
+                                     width:  80,
+                                     child: Text('Cucina'),
+                                   ),
+                                 ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      kitchenSelected =false;
+                                      barSelected=true;
+                                      dessertSelected = false;
+                                      foodType = 'Bar';
+                                    });
+                                  },
+                                  child: Container(
+                                    color: barSelected ? Colors.lightGreenAccent : Colors.white,
+                                    height: 80,
+                                    width:  80,
+                                    child: Text('Bar'),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      kitchenSelected = false;
+                                      barSelected=false;
+                                      dessertSelected = true;
+                                      foodType = 'Dessert';
+                                    });
+                                  },
+                                  child: Container(
+                                    color: dessertSelected ? Colors.lightGreenAccent : Colors.white,
+                                    height: 80,
+                                    width:  80,
+                                    child: Text('Dessert'),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+
                           SliverToBoxAdapter(
                               child:TextButton(
                                 style:
@@ -208,9 +271,10 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
 
                                         String? url = await storage.uploadImage(_fileBytes!, id);
 
-                                        if(double.tryParse(price.text) != null && nameENG.text != ''){
+                                        if(double.tryParse(price.text) != null && nameENG.text != '' && foodType != ' '){
 
                                           Food food = Food(
+                                            type: foodType,
                                               id: id,
                                               nameITA: nameIT.text,
                                               nameENG: nameENG.text,
@@ -231,6 +295,10 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                               descriptionENG.clear();
                                               price.clear();
                                              foodAllegyList.clear();
+                                             foodType =' ';
+                                             kitchenSelected = false;
+                                             barSelected = false;
+                                             dessertSelected = false;
                                               for(String item in foodAllegyList){
                                                 print(item);
                                               }
@@ -357,6 +425,62 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                             allAllergenList: allAllergensList,
                             allergenList: foodAllegyList,
                           ),
+                          SliverToBoxAdapter(child: Text('selezionare il tipo di portata')),
+                          SliverToBoxAdapter(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      kitchenSelected = true;
+                                      barSelected=false;
+                                      dessertSelected = false;
+                                      foodType = 'Cucina';
+                                    });
+                                  },
+                                  child: Container(
+                                    color: kitchenSelected ? Colors.lightGreenAccent : Colors.white,
+                                    height: 80,
+                                    width:  80,
+                                    child: Text('Cucina'),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      kitchenSelected =false;
+                                      barSelected=true;
+                                      dessertSelected = false;
+                                      foodType = 'Bar';
+                                    });
+                                  },
+                                  child: Container(
+                                    color: barSelected ? Colors.lightGreenAccent : Colors.white,
+                                    height: 80,
+                                    width:  80,
+                                    child: Text('Bar'),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      kitchenSelected = false;
+                                      barSelected=false;
+                                      dessertSelected = true;
+                                      foodType = 'Dessert';
+                                    });
+                                  },
+                                  child: Container(
+                                    color: dessertSelected ? Colors.lightGreenAccent : Colors.white,
+                                    height: 80,
+                                    width:  80,
+                                    child: Text('Dessert'),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                           SliverToBoxAdapter(
                             child: TextButton(
                               style:
@@ -379,9 +503,10 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                     String? url = await storage.uploadImage(_fileBytes!, id);
 
 
-                                    if( double.tryParse(price.text)!= null  && nameENG.text != ''){
+                                    if( double.tryParse(price.text)!= null  && nameENG.text != '' && foodType != ' '){
 
                                       Food food = Food(
+                                          type: foodType,
                                           id: id,
                                           nameITA: nameIT.text,
                                           nameENG: nameENG.text,
@@ -402,6 +527,11 @@ class _StaffAddScreenState extends State<StaffAddScreen> {
                                           descriptionITA.clear();
                                           descriptionENG.clear();
                                           price.clear();
+
+                                          foodType =' ';
+                                          kitchenSelected = false;
+                                          barSelected = false;
+                                          dessertSelected = false;
                                           foodAllegyList.clear();
                                           for(int i=0;i<boolList.length;i++){
                                             boolList[i]=false;

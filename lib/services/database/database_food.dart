@@ -7,6 +7,9 @@ class DatabaseFood {
   static CollectionReference<Map<String, dynamic>> foodCollection2 =
   FirebaseFirestore.instance.collection('foods');
 
+  static CollectionReference<Map<String, dynamic>> foodCollection3 =
+  FirebaseFirestore.instance.collection('foods');
+
   Future deleteFood({required String foodID}) async{
    await  foodCollection.doc(foodID).delete();
    return;
@@ -15,6 +18,7 @@ class DatabaseFood {
   Future createEdit({required Food food, required bool isEdit}) async {
     return isEdit
         ? await foodCollection.doc(food.id).update({
+            'type' : food.type,
             'allergens' :food.allergens,
             'nameITA': food.nameITA,
             'active': food.active,
@@ -27,6 +31,7 @@ class DatabaseFood {
             'nameENG': food.nameENG
           })
         : await foodCollection.doc(food.id).set({
+           'type' : food.type,
            'allergens' :food.allergens,
            'nameITA': food.nameITA,
            'active': food.active,
@@ -45,6 +50,7 @@ class DatabaseFood {
     switch (snapshot.data()?['category']) {
       case 'FoodCategory.aperitifs':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -62,6 +68,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.appetizers':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -79,6 +86,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.mainDishes':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -96,6 +104,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.secondCourses':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -113,6 +122,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.sideDishes':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -130,6 +140,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.dessert':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -147,6 +158,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.beers':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -164,6 +176,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.nonAlcoholic':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -181,6 +194,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.wines':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -205,6 +219,7 @@ class DatabaseFood {
     switch (snapshot.data()?['category']) {
       case 'FoodCategory.aperitifs':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -222,6 +237,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.appetizers':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -239,6 +255,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.mainDishes':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -256,6 +273,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.secondCourses':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -273,6 +291,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.sideDishes':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -290,6 +309,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.dessert':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -307,6 +327,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.beers':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -324,6 +345,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.nonAlcoholic':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -341,6 +363,7 @@ class DatabaseFood {
         );
       case 'FoodCategory.wines':
         return Food(
+          type:snapshot.data()?['type'] ?? "",
           allergens: snapshot.data()?['allergens'] != null
               ? (snapshot.data()?['allergens'] as List)
               .map((item) => item as String)
@@ -372,6 +395,7 @@ class DatabaseFood {
           switch (snapshot.data()['category']) {
             case 'FoodCategory.aperitifs':
               Food food =  Food(
+                type:snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -391,6 +415,7 @@ class DatabaseFood {
 
             case 'FoodCategory.appetizers':
               Food food =  Food(
+                type:snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -409,6 +434,7 @@ class DatabaseFood {
               allFood.add(food);
             case 'FoodCategory.mainDishes':
               Food food =Food(
+                type:snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -427,6 +453,7 @@ class DatabaseFood {
               allFood.add(food);
             case 'FoodCategory.secondCourses':
               Food food = Food(
+                type:snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -445,6 +472,7 @@ class DatabaseFood {
               allFood.add(food);
             case 'FoodCategory.sideDishes':
               Food food = Food(
+                type:snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -463,7 +491,8 @@ class DatabaseFood {
               allFood.add(food);
             case 'FoodCategory.dessert':
              Food food = Food(
-                allergens: snapshot.data()['allergens'] != null
+               type:snapshot.data()['type'] ?? "",
+               allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
                     .toList()
@@ -481,6 +510,7 @@ class DatabaseFood {
              allFood.add(food);
             case 'FoodCategory.beers':
               Food food = Food(
+                type:snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -499,6 +529,7 @@ class DatabaseFood {
               allFood.add(food);
             case 'FoodCategory.nonAlcoholic':
               Food food = Food(
+                type: snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -517,6 +548,7 @@ class DatabaseFood {
               allFood.add(food);
             case 'FoodCategory.wines':
             Food food =  Food(
+              type: snapshot.data()['type'] ?? "",
                 allergens: snapshot.data()['allergens'] != null
                     ? (snapshot.data()['allergens'] as List)
                     .map((item) => item as String)
@@ -544,6 +576,7 @@ class DatabaseFood {
     return [];
   }
 
+
   Stream<Food?> singleFood({required String id}) =>
       foodCollection.doc(id).snapshots().map(foodFromSnapshot);
 
@@ -561,6 +594,13 @@ class DatabaseFood {
   static Stream<List<Food?>> get allFood2 =>
       foodCollection2.snapshots().map(foodListFromSnapshot2);
 
+
+  static List<Food?> foodListFromSnapshot3(
+      QuerySnapshot<Map<String, dynamic>> snapshot) =>
+      snapshot.docs.map((snapshot) => foodFromSnapshot2(snapshot)).toList();
+
+  static Stream<List<Food?>> get allFood3 =>
+      foodCollection3.snapshots().map(foodListFromSnapshot2);
 
 }
 

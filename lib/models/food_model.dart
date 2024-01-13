@@ -13,6 +13,7 @@ class Food{
   final String descriptionENG;
   final List<String> allergens;
   final bool active;
+  String? type;
 
   Food({
     required this.id,
@@ -25,6 +26,7 @@ class Food{
     required this.descriptionENG,
     required this.allergens,
     required this.active,
+    this.type
   });
 
 }

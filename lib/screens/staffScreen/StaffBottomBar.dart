@@ -14,7 +14,8 @@ class _StaffBottomBarState extends State<StaffBottomBar> {
    StaffHomepage(),
     StaffAddScreen(),
    OrdersScreen(),
-    TableNumbers()
+    TableNumbers(),
+    PrinterScreen()
   ];
 
   @override
@@ -45,7 +46,12 @@ class _StaffBottomBarState extends State<StaffBottomBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.table_bar),
-            label: 'Page 4',
+            label: 'Tables',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.print
+            ),
+            label: 'Printer',
           ),
         ],
       ),
