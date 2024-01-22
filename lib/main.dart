@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorSchemeSeed: mainColor
       ),
-      home: HomePage(),
+      home: PizzaHomePage(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

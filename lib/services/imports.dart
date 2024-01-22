@@ -59,6 +59,8 @@ export '../screens/staffScreen/orders_screen.dart';
 export '../screens/orderHistoryScreen.dart';
 export '../screens/staffScreen/printer_screen.dart';
 export '../screens/example_screen1.dart';
+export '../screens/PizzaScreens/PizzaHomePage.dart';
+export '../screens/PizzaScreens/VisualPizzaScreen.dart';
 
 //general widget
 export '../widgets/GeneralWidget/CustomTextField.dart';
